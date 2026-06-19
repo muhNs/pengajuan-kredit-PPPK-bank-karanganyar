@@ -82,6 +82,11 @@ export default function PengajuanEditModal({ pengajuan, onSave, onClose, isSubmi
                 npwp: pengajuan.data_diri?.npwp || '',
                 nama_ibu_kandung: pengajuan.data_diri?.nama_ibu_kandung || '',
                 
+                nama_kerabat: pengajuan.data_diri?.nama_kerabat || '',
+                alamat_kerabat: pengajuan.data_diri?.alamat_kerabat || '',
+                nik_kerabat: pengajuan.data_diri?.nik_kerabat || '',
+                no_handphone_kerabat: pengajuan.data_diri?.no_handphone_kerabat || '',
+                
                 // Menyimpan ID murninya ke state form agar sinkron dengan HTML <select> value
                 status_rumah_id: pengajuan.data_diri?.status_rumah?.id || '',
                 status_pernikahan_id: pengajuan.data_diri?.status_pernikahan?.id || '',
@@ -108,6 +113,10 @@ export default function PengajuanEditModal({ pengajuan, onSave, onClose, isSubmi
                 penjamin_nik: pengajuan.data_penjamin?.nik || '',
                 penjamin_no_telepon: pengajuan.data_penjamin?.no_telepon || '',
                 penjamin_hubungan_kerabat: pengajuan.data_penjamin?.hubungan_kerabat || '',
+                nama_pasangan_penjamin: pengajuan.data_penjamin?.nama_pasangan_penjamin || '',
+                alamat_pasangan_penjamin: pengajuan.data_penjamin?.alamat_pasangan_penjamin || '',
+                nik_pasangan_penjamin: pengajuan.data_penjamin?.nik_pasangan_penjamin || '',
+                no_telepon_pasangan_penjamin: pengajuan.data_penjamin?.no_telepon_pasangan_penjamin || ''
             });
         }
     }, [pengajuan]);
@@ -177,9 +186,6 @@ export default function PengajuanEditModal({ pengajuan, onSave, onClose, isSubmi
 
                             <SectionDivider title="Data Pribadi Pemohon" />
                             <InputField label="Nama Lengkap" name="nama_lengkap" value={form.nama_lengkap} onChange={handleChange} disabled={isSubmitting} />
-
-                            <SectionDivider title="Data Pribadi Pemohon" />
-                            <InputField label="Nama Lengkap" name="nama_lengkap" value={form.nama_lengkap} onChange={handleChange} disabled={isSubmitting} />
                             <InputField label="Nomor Handphone" name="no_handphone" value={form.no_handphone} onChange={handleChange} disabled={isSubmitting} />
                             <InputField label="No. KTP (NIK)" name="nik" value={form.nik} onChange={handleChange} disabled={isSubmitting} />
                             <InputField label="Tempat Tinggal / Alamat" name="alamat" value={form.alamat} onChange={handleChange} disabled={isSubmitting} />
@@ -217,6 +223,12 @@ export default function PengajuanEditModal({ pengajuan, onSave, onClose, isSubmi
                                 disabled={isSubmitting} 
                             />
 
+                            <SectionDivider title="Data Kerabat Pemohon" />
+                            <InputField label="Nama Lengkap Kerabat" name="nama_kerabat" value={form.nama_kerabat} onChange={handleChange} disabled={isSubmitting} />
+                            <InputField label="Nomor Handphone Kerabat" name="telp_kerabat" value={form.no_handphone_kerabat} onChange={handleChange} disabled={isSubmitting} />
+                            <InputField label="No. KTP (NIK) Kerabat" name="nik_kerabat" value={form.nik_kerabat} onChange={handleChange} disabled={isSubmitting} />
+                            <InputField label="Tempat Tinggal / Alamat Kerabat" name="alamat_kerabat" value={form.alamat_kerabat} onChange={handleChange} disabled={isSubmitting} />
+
                             <SectionDivider title="Data Instansi / Pekerjaan" />
                             {/* --- UNTUK INSTANSI JUGA KITA UBAH JADI SELECTFIELD --- */}
                             <SelectField 
@@ -249,12 +261,18 @@ export default function PengajuanEditModal({ pengajuan, onSave, onClose, isSubmi
                             <InputField label="Alamat Pasangan" name="pasangan_alamat" value={form.pasangan_alamat} onChange={handleChange} disabled={isSubmitting} />
                             <InputField label="No. Telp Pasangan" name="pasangan_no_telepon" value={form.pasangan_no_telepon} onChange={handleChange} disabled={isSubmitting} />
 
-                            <SectionDivider title="Identitas Penjamin Kontak Darurat" />
+                            <SectionDivider title="Identitas Penjamin" />
                             <InputField label="Nama Penjamin" name="penjamin_nama" value={form.penjamin_nama} onChange={handleChange} disabled={isSubmitting} />
                             <InputField label="No. KTP Penjamin" name="penjamin_nik" value={form.penjamin_nik} onChange={handleChange} disabled={isSubmitting} />
                             <InputField label="Alamat Penjamin" name="penjamin_alamat" value={form.penjamin_alamat} onChange={handleChange} disabled={isSubmitting} />
                             <InputField label="No. Telepon Penjamin" name="penjamin_no_telepon" value={form.penjamin_no_telepon} onChange={handleChange} disabled={isSubmitting} />
                             <InputField label="Hubungan Kerabat" name="penjamin_hubungan_kerabat" value={form.penjamin_hubungan_kerabat} onChange={handleChange} disabled={isSubmitting} />
+
+                            <SectionDivider title="Identitas Pasangan Penjamin" />
+                            <InputField label="Nama Pasangan Penjamin" name="nama_pasangan_penjamin" value={form.nama_pasangan_penjamin} onChange={handleChange} disabled={isSubmitting} />
+                            <InputField label="No. KTP Pasangan Penjamin" name="nik_pasangan_penjamin" value={form.nik_pasangan_penjamin} onChange={handleChange} disabled={isSubmitting} />
+                            <InputField label="Alamat Pasangan Penjamin" name="alamat_pasangan_penjamin" value={form.alamat_pasangan_penjamin} onChange={handleChange} disabled={isSubmitting} />
+                            <InputField label="No. Telepon Pasangan Penjamin" name="no_telepon_pasangan_penjamin" value={form.no_telepon_pasangan_penjamin} onChange={handleChange} disabled={isSubmitting} />
                         </div>
                     </div>
 

@@ -164,6 +164,15 @@ export default function PengajuanDocument({ pengajuan }) {
                 </div>
             </SectionCard>
 
+            <SectionCard title="Data Kerabat Pemohon">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                    <DataField label="Nama Lengkap Kerabat Sesuai KTP" value={pengajuan.data_diri?.nama_kerabat} />
+                    <DataField label="Nomor Handphone" value={pengajuan.data_diri?.no_handphone_kerabat} />
+                    <DataField label="Tanda Pengenal (KTP) Nomor" value={pengajuan.data_diri?.nik_kerabat} />
+                    <DataField label="Tempat Tinggal" value={pengajuan.data_diri?.alamat_kerabat} fullWidth />
+                </div>
+            </SectionCard>
+
             {/* DATA KREDIT */}
             <SectionCard title="Data Kredit">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
