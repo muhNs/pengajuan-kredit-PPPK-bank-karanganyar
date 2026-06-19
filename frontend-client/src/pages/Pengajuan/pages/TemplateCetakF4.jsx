@@ -1,7 +1,7 @@
 import React from "react";
 
 // Komponen ini didesain khusus untuk dicetak dengan kertas F4 (Folio)
-export default function TemplateCetakF4({ formData }) {
+export default function TemplateCetakF4({ formData, masterOptions }) {
     // Format Tanggal Indonesia Realtime (Contoh: 15 Mei 2026)
     const getTanggalSekarang = () => {
         const options = { day: "numeric", month: "long", year: "numeric" };
@@ -17,6 +17,19 @@ export default function TemplateCetakF4({ formData }) {
     const instansiTerpilih = masterOptions?.instansi?.find(
         (item) => String(item.id) === String(formData.instansi),
     );
+
+    // Lookup label teks dari masterOptions menggunakan ID yang tersimpan di formData
+    const labelStatusRumah = masterOptions?.statusRumah?.find(
+        (item) => String(item.id) === String(formData.status_rumah_id)
+    )?.kepemilikan || "\u00A0";
+
+    const labelStatusPernikahan = masterOptions?.statusPernikahan?.find(
+        (item) => String(item.id) === String(formData.status_pernikahan_id)
+    )?.status || "\u00A0";
+
+    const labelJenisKelamin = masterOptions?.jenisKelamin?.find(
+        (item) => String(item.id) === String(formData.jenis_kelamin_id)
+    )?.gender || "\u00A0";
 
     // Ambil datanya, siapkan nilai "fallback" berupa titik-titik jika data kosong/belum dipilih
     const namaKepala =
@@ -172,7 +185,7 @@ export default function TemplateCetakF4({ formData }) {
                                 <td>Status Rumah</td>
                                 <td>:</td>
                                 <td className="uppercase garis-bawah">
-                                    {formData.status_rumah || "\u00A0"}
+                                    {labelStatusRumah}
                                 </td>
                             </tr>
                             <tr>
@@ -180,12 +193,12 @@ export default function TemplateCetakF4({ formData }) {
                                 <td>:</td>
                                 <td className="uppercase">
                                     <span className="garis-bawah inline-block min-w-[150px]">
-                                        {formData.status_pernikahan || "\u00A0"}
+                                        {labelStatusPernikahan}
                                     </span>{" "}
                                     <span className="ml-8">
                                         Jenis Kelamin:{" "}
                                         <span className="garis-bawah inline-block min-w-[150px] text-center">
-                                            {formData.jenis_kelamin || "\u00A0"}
+                                            {labelJenisKelamin}
                                         </span>
                                     </span>
                                 </td>
@@ -281,7 +294,7 @@ export default function TemplateCetakF4({ formData }) {
                                 <td className="uppercase garis-bawah">
                                     Rp.{" "}
                                     {formData.pendapatan_tetap
-                                        ? formatRp(formData.pendapatan_tetap)
+                                        ? formatRp(String(formData.pendapatan_tetap).replace(/\D/g, ''))
                                         : "\u00A0"}
                                 </td>
                             </tr>
@@ -291,9 +304,7 @@ export default function TemplateCetakF4({ formData }) {
                                 <td className="uppercase garis-bawah">
                                     Rp.{" "}
                                     {formData.pendapatan_tidak_tetap
-                                        ? formatRp(
-                                              formData.pendapatan_tidak_tetap,
-                                          )
+                                        ? formatRp(String(formData.pendapatan_tidak_tetap).replace(/\D/g, ''))
                                         : "\u00A0"}
                                 </td>
                             </tr>

@@ -14,11 +14,11 @@ export default function Step4DataPegawaiPendapatan({ formData, setFormData, mast
     };
 
     const handleInputChange = (e) => {
-        const { name } = e.target;
-        // Trim spasi dari copas agar tidak gagal validasi
-        const value = e.target.value.trim();
+        const { name, value } = e.target;
+        // CATATAN: Jangan gunakan .trim() di sini karena akan memblokir input spasi
+        // di field teks seperti jabatan. Trim hanya dilakukan saat submit jika diperlukan.
 
-        // Validasi NIP (Hanya boleh angka)
+        // Validasi NIP (Hanya boleh angka, tanpa spasi)
         if (name === 'nip' && value !== '') {
             if (!/^\d+$/.test(value)) return; 
         }
