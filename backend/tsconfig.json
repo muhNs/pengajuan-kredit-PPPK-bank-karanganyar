@@ -4,14 +4,9 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "rootDir": "./",
-    "baseUrl": "./",
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "ignoreDeprecations": "5.0",
     "outDir": "./dist",
@@ -20,11 +15,6 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

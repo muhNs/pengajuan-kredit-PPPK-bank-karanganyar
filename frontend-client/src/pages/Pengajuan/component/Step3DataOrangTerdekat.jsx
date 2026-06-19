@@ -51,8 +51,8 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                         </label>
                         <input
                             type="text"
-                            name="nama_kerabat"
-                            value={formData.nama_kerabat}
+                            name="nama_penjamin"
+                            value={formData.nama_penjamin}
                             onChange={handleInputChange}
                             required
                             placeholder="Contoh: Ahmad Hidayat"
@@ -68,8 +68,8 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                         </label>
                         <input
                             type="text"
-                            name="nik_kerabat"
-                            value={formData.nik_kerabat}
+                            name="nik_penjamin"
+                            value={formData.nik_penjamin}
                             onChange={handleInputChange}
                             required
                             placeholder="16 Digit Angka NIK"
@@ -85,8 +85,8 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                         </label>
                         <input
                             type="text"
-                            name="telp_kerabat"
-                            value={formData.telp_kerabat}
+                            name="telp_penjamin"
+                            value={formData.telp_penjamin}
                             onChange={handleInputChange}
                             required
                             placeholder="Contoh: 08123456789"
@@ -101,8 +101,8 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             <span className="text-red-500">*</span>
                         </label>
                         <select
-                            name="hubungan_kerabat"
-                            value={formData.hubungan_kerabat}
+                            name="penjamin_hubungan_kerabat"
+                            value={formData.penjamin_hubungan_kerabat}
                             onChange={handleInputChange}
                             required
                             className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] bg-gray-50 outline-none transition-all"
@@ -126,8 +126,8 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             <span className="text-red-500">*</span>
                         </label>
                         <textarea
-                            name="alamat_kerabat"
-                            value={formData.alamat_kerabat}
+                            name="alamat_penjamin"
+                            value={formData.alamat_penjamin}
                             onChange={handleInputChange}
                             required
                             rows="2"
@@ -160,8 +160,10 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                 </label>
                                 <input
                                     type="text"
-                                    name="nama_pasangan_kerabat"
-                                    value={formData.nama_pasangan_kerabat || ""}
+                                    name="nama_pasangan_penjamin"
+                                    value={
+                                        formData.nama_pasangan_penjamin || ""
+                                    }
                                     onChange={handleInputChange}
                                     placeholder="Masukkan nama pasangan penjamin"
                                     className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
@@ -174,8 +176,8 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                 </label>
                                 <input
                                     type="text"
-                                    name="nik_pasangan_kerabat"
-                                    value={formData.nik_pasangan_kerabat || ""}
+                                    name="nik_pasangan_penjamin"
+                                    value={formData.nik_pasangan_penjamin || ""}
                                     onChange={handleInputChange}
                                     placeholder="NIK (16 digit)"
                                     inputMode="numeric"
@@ -191,8 +193,8 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                 Alamat Lengkap
                             </label>
                             <textarea
-                                name="alamat_pasangan_kerabat"
-                                value={formData.alamat_pasangan_kerabat || ""}
+                                name="alamat_pasangan_penjamin"
+                                value={formData.alamat_pasangan_penjamin || ""}
                                 onChange={handleInputChange}
                                 rows="3"
                                 placeholder="Masukkan alamat lengkap pasangan penjamin"
@@ -208,8 +210,10 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                 </label>
                                 <input
                                     type="tel"
-                                    name="telp_pasangan_kerabat"
-                                    value={formData.telp_pasangan_kerabat || ""}
+                                    name="telp_pasangan_penjamin"
+                                    value={
+                                        formData.telp_pasangan_penjamin || ""
+                                    }
                                     onChange={handleInputChange}
                                     placeholder="Masukkan nomor telepon aktif"
                                     className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"

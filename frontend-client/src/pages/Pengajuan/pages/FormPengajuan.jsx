@@ -17,7 +17,7 @@ const INITIAL_FORM_DATA = {
     // Step 2 (Opsional)
     nama_pasangan: '', nik_pasangan: '', alamat_pasangan: '', telp_pasangan: '',
     // Step 3
-    nama_penjamin: '', nik_penjamin: '', alamat_penjamin: '', telp_penjamin: '', hubungan_penjamin: '', nama_pasangan_penjamin: '', nik_pasangan_penjamin: '', alamat_pasangan_penjamin: '', telp_pasangan_penjamin: '',
+    nama_penjamin: '', nik_penjamin: '', alamat_penjamin: '', telp_penjamin: '', penjamin_hubungan_kerabat: '', nama_pasangan_penjamin: '', nik_pasangan_penjamin: '', alamat_pasangan_penjamin: '', telp_pasangan_penjamin: '',
     // Step 4
     instansi: '', jabatan: '', nip: '', pendapatan_tetap: '', pendapatan_tidak_tetap: '',
     // Step 5
@@ -89,7 +89,7 @@ export default function FormPengajuan() {
             payload.append("penjamin_alamat", formData.alamat_penjamin);
             payload.append("penjamin_nik", formData.nik_penjamin);
             payload.append("penjamin_no_telepon", formData.telp_penjamin);
-            payload.append("penjamin_hubungan_kerabat", formData.hubungan_penjamin);
+            payload.append("penjamin_hubungan_kerabat", formData.penjamin_hubungan_kerabat);
             payload.append("nama_pasangan_penjamin", formData.nama_pasangan_penjamin);
             payload.append("nik_pasangan_penjamin", formData.nik_pasangan_penjamin);
             payload.append("alamat_pasangan_penjamin", formData.alamat_pasangan_penjamin);
