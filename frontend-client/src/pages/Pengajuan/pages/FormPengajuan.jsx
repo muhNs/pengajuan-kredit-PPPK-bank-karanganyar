@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import Step1DataDiri from '../component/Step1DataDiri';
@@ -37,10 +37,50 @@ const STEPS = [
 ];
 
 export default function FormPengajuan() {
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(() => {
+        const savedStep = localStorage.getItem('formPengajuan_step');
+        return savedStep ? parseInt(savedStep, 10) : 1;
+    });
     const [direction, setDirection] = useState(1);
     const [isSuccess, setIsSuccess] = useState(false);
-    const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+    const [formData, setFormData] = useState(() => {
+        const savedData = localStorage.getItem('formPengajuan_data');
+        if (savedData) {
+            try {
+                const parsed = JSON.parse(savedData);
+                // Kembalikan file ke state null karena tipe File tidak bisa di-stringify ke localStorage
+                return { 
+                    ...INITIAL_FORM_DATA, 
+                    ...parsed, 
+                    file_ktp: null, 
+                    file_kk: null, 
+                    file_ktp_pasangan: null, 
+                    file_surat_nikah: null, 
+                    file_ijazah: null, 
+                    file_sk: null, 
+                    file_npwp: null 
+                };
+            } catch (e) {
+                console.error("Gagal parse localStorage", e);
+            }
+        }
+        return INITIAL_FORM_DATA;
+    });
+
+    // --- Efek untuk menyimpan ke localStorage ---
+    useEffect(() => {
+        localStorage.setItem('formPengajuan_step', step.toString());
+    }, [step]);
+
+    useEffect(() => {
+        // Hilangkan file sebelum di-stringify
+        const { 
+            file_ktp, file_kk, file_ktp_pasangan, file_surat_nikah, 
+            file_ijazah, file_sk, file_npwp, 
+            ...dataToSave 
+        } = formData;
+        localStorage.setItem('formPengajuan_data', JSON.stringify(dataToSave));
+    }, [formData]);
 
     // MENGGUNAKAN CUSTOM HOOK
     const { masterOptions, isLoadingMaster, isSubmitting, error, submitData } = usePengajuan();
@@ -124,6 +164,9 @@ export default function FormPengajuan() {
             
             if (success) {
                 setIsSuccess(true);
+                // Bersihkan localStorage saat berhasil agar nasabah baru mendapat form kosong
+                localStorage.removeItem('formPengajuan_data');
+                localStorage.removeItem('formPengajuan_step');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 alert(error || "Gagal mengirim pengajuan. Coba lagi.");

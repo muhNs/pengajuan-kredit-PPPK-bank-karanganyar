@@ -8,9 +8,8 @@ export default function Step1DataDiri({
 }) {
     // Fungsi khusus untuk menangani perubahan input
     const handleChange = (e) => {
-        const { name } = e.target;
-        // Trim spasi dari copas agar tidak gagal validasi
-        const value = e.target.value.trim();
+        const { name, value } = e.target;
+        // JANGAN gunakan .trim() di sini karena akan memblokir pengguna saat mengetik spasi.
 
         // Validasi: Input yang hanya boleh angka
         if (

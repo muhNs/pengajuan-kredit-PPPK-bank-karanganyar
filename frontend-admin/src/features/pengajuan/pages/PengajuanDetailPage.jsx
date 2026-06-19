@@ -238,6 +238,7 @@ export default function PengajuanDetailPage() {
         {/* Modal Edit */}
         {showEdit && (
           <PengajuanEditModal
+            pengajuan={detailData.data || detailData}
             onClose={() => setShowEdit(false)}
             onSave={handleSave}
             isSubmitting={isSubmitting}
