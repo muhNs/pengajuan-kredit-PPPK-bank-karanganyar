@@ -24,32 +24,32 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 md:p-10 border border-white/30 animate-slide-up">
-            <div className="text-center mb-8">
+        <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-6 sm:p-8 md:p-10 border border-white/50 animate-slide-up mx-2 sm:mx-0">
+            <div className="text-center mb-6 sm:mb-8">
                 <img 
                     src="/src/assets/logo-final.png" 
                     alt="Bank Karanganyar" 
-                    className="h-16 w-auto mx-auto mb-6 drop-shadow-xl" 
+                    className="h-12 sm:h-16 w-auto mx-auto mb-4 sm:mb-6 drop-shadow-xl" 
                 />
-                <h1 className="text-3xl font-bold text-gray-800">Selamat Datang</h1>
-                <p className="text-gray-500 mt-2">Masuk ke Sistem Admin</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight">Selamat Datang</h1>
+                <p className="text-sm sm:text-base text-gray-500 mt-1.5 sm:mt-2">Masuk ke Sistem Admin</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Email / NIP</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email / NIP</label>
                     <input
                         type="email"
                         value={form.email}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, email: e.target.value })}
-                        className="w-full px-5 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        className="w-full px-4 py-3 sm:px-5 sm:py-4 text-sm sm:text-base border border-gray-200 rounded-2xl focus:outline-none focus:border-[#FFC800] focus:ring-4 focus:ring-[#FFC800]/20 transition-all bg-gray-50/50 hover:bg-white focus:bg-white"
                         placeholder="Masukkan email atau NIP"
                         required
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
                     {/* [PERBAIKAN] Container relative untuk memposisikan ikon di dalam input */}
                     <div className="relative">
                         <input
@@ -58,7 +58,7 @@ export default function LoginForm() {
                             value={form.password}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, password: e.target.value })}
                             // Tambahkan pr-12 agar teks tidak tertutup ikon
-                            className="w-full px-5 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 pr-12"
+                            className="w-full px-4 py-3 sm:px-5 sm:py-4 text-sm sm:text-base border border-gray-200 rounded-2xl focus:outline-none focus:border-[#FFC800] focus:ring-4 focus:ring-[#FFC800]/20 transition-all bg-gray-50/50 hover:bg-white focus:bg-white pr-12"
                             placeholder="Masukkan password"
                             required
                         />
@@ -95,11 +95,11 @@ export default function LoginForm() {
                     </div>
                 )}
 
-                <div className="flex justify-end">
+                <div className="flex justify-end pt-1">
                     <button
                         type="button"
                         onClick={() => navigate("/forgot-password")}
-                        className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+                        className="text-[13px] sm:text-sm font-semibold text-[#152042] hover:text-[#FFC800] hover:underline transition-colors"
                     >
                         Lupa Password?
                     </button>
@@ -108,7 +108,7 @@ export default function LoginForm() {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 bg-gradient-to-r from-[#152042] to-[#0B1171] text-white font-semibold rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 shadow-lg flex justify-center items-center gap-2"
+                    className="w-full py-3.5 sm:py-4 bg-[#152042] hover:bg-[#1E2E5C] text-white text-sm sm:text-base font-bold rounded-2xl transition-all hover:shadow-[0_8px_20px_rgb(21,32,66,0.3)] hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-none shadow-lg flex justify-center items-center gap-2"
                 >
                     {isLoading ? (
                         <>
