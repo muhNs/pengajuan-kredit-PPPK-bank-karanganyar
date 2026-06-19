@@ -76,7 +76,7 @@ export default function FormPengajuan() {
             payload.append("nama_kerabat", formData.nama_kerabat);
             payload.append("nik_kerabat", formData.nik_kerabat);
             payload.append("alamat_kerabat", formData.alamat_kerabat);
-            payload.append("telp_kerabat", formData.telp_kerabat);
+            payload.append("no_handphone_kerabat", formData.telp_kerabat);
 
             // 2. Data Pasangan
             if (formData.nama_pasangan) payload.append("pasangan_nama", formData.nama_pasangan);
@@ -90,10 +90,10 @@ export default function FormPengajuan() {
             payload.append("penjamin_nik", formData.nik_penjamin);
             payload.append("penjamin_no_telepon", formData.telp_penjamin);
             payload.append("penjamin_hubungan_kerabat", formData.hubungan_penjamin);
-            payload.append("nama_pasangan_penjamin", formData.nama_pasangan_penjamin);
-            payload.append("nik_pasangan_penjamin", formData.nik_pasangan_penjamin);
-            payload.append("alamat_pasangan_penjamin", formData.alamat_pasangan_penjamin);
-            payload.append("telp_pasangan_penjamin", formData.telp_pasangan_penjamin);
+            if (formData.nama_pasangan_penjamin) payload.append("penjamin_nama_pasangan", formData.nama_pasangan_penjamin);
+            if (formData.nik_pasangan_penjamin) payload.append("penjamin_nik_pasangan", formData.nik_pasangan_penjamin);
+            if (formData.alamat_pasangan_penjamin) payload.append("penjamin_alamat_pasangan", formData.alamat_pasangan_penjamin);
+            if (formData.telp_pasangan_penjamin) payload.append("penjamin_no_telepon_pasangan", formData.telp_pasangan_penjamin);
 
             // 4. Data Pekerjaan
             payload.append("instansi_id", formData.instansi);
@@ -231,7 +231,7 @@ export default function FormPengajuan() {
             {/* ERROR ALERT */}
             {error && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium">
-                    {error}
+                    ⚠️ {typeof error === 'string' ? error : 'Terjadi kesalahan. Silakan coba lagi.'}
                 </div>
             )}
 

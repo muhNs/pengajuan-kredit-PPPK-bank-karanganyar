@@ -42,11 +42,30 @@ export const usePengajuan = () => {
             return true; // Sukses
         } catch (err: any) {
             console.error("Submit error:", err);
-            // Tangkap pesan error dari backend jika ada
-            const errorMessage =
-                err.response?.data?.error ||
-                err.message ||
-                "Gagal mengirim pengajuan";
+            // Tangkap pesan error dari backend - bisa string, array, atau object
+            const responseData = err.response?.data;
+            let errorMessage = "Gagal mengirim pengajuan. Periksa kembali data Anda.";
+
+            if (responseData) {
+                if (typeof responseData.error === 'string') {
+                    // Format: { error: "pesan" }
+                    errorMessage = responseData.error;
+                } else if (typeof responseData.message === 'string') {
+                    // Format: { message: "pesan" }
+                    errorMessage = responseData.message;
+                } else if (Array.isArray(responseData)) {
+                    // Format: [ { message: "...", path: [...] } ]
+                    errorMessage = responseData.map((e: any) => e.message || JSON.stringify(e)).join(', ');
+                } else if (typeof responseData === 'string') {
+                    errorMessage = responseData;
+                } else if (responseData.errors && Array.isArray(responseData.errors)) {
+                    // Format: { errors: [ { message: "..." } ] }
+                    errorMessage = responseData.errors.map((e: any) => e.message || JSON.stringify(e)).join(', ');
+                }
+            } else if (typeof err.message === 'string') {
+                errorMessage = err.message;
+            }
+
             setError(errorMessage);
             return false; // Gagal
         } finally {

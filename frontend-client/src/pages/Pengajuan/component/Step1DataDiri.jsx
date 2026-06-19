@@ -8,14 +8,16 @@ export default function Step1DataDiri({
 }) {
     // Fungsi khusus untuk menangani perubahan input
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name } = e.target;
+        // Trim spasi dari copas agar tidak gagal validasi
+        const value = e.target.value.trim();
 
         // Validasi: Input yang hanya boleh angka
         if (
             ["nik", "no_telp", "kode_pos", "npwp"].includes(name) &&
             value !== ""
         ) {
-            if (!/^\d+$/.test(value)) return; // Tolak jika user mengetik huruf
+            if (!/^\d+$/.test(value)) return; // Tolak jika ada huruf
         }
 
         // Validasi: Batasi NIK maksimal 16 digit
