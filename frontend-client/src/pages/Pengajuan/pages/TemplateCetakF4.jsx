@@ -245,7 +245,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                                 <td className="w-[32%]">Nama Instansi</td>
                                 <td className="w-[2%]">:</td>
                                 <td className="w-[66%] uppercase garis-bawah">
-                                    {formData.instansi || "\u00A0"}
+                                    {instansiTerpilih?.nama_instansi || "\u00A0"}
                                 </td>
                             </tr>
                             <tr>
@@ -741,7 +741,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                             <td>Dinas</td>
                             <td>:</td>
                             <td className="uppercase garis-bawah">
-                                {formData.instansi || "\u00A0"}
+                                {instansiTerpilih?.nama_instansi || "\u00A0"}
                             </td>
                         </tr>
                         <tr>
