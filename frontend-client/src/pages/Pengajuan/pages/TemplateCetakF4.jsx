@@ -129,22 +129,22 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                 </div>
 
                 <div className="mb-2">
+                    {/* DATA PRIBADI PEMOHON */}
+                    <div className="bg-[#CC0000] text-white font-bold px-2 py-0.5 flex justify-between mb-2 mt-3">
+                        <span>DATA PRIBADI PEMOHON</span>
+                        <span className="italic font-normal text-[9px] pt-0.5">
+                            Mohon diisi dengan huruf cetak
+                        </span>
+                    </div>
+
                     <p className="mb-1">Dengan hormat,</p>
-                    <p className="mb-2 text-justify">
+                    <p className="mb-3 text-justify">
                         Dengan ini kami mengajukan Permohonan Kredit Karyawan
                         Kepada PT BPR Bank Karanganyar dengan data kami
                         sampaikan dengan sebenar-benarnya dan kami sanggup
                         mempertanggung jawabkan kebenaran data secara hukum
                         sebagai berikut :
                     </p>
-
-                    {/* DATA PRIBADI PEMOHON */}
-                    <div className="bg-[#CC0000] text-white font-bold px-2 py-0.5 flex justify-between mb-1.5 mt-3">
-                        <span>DATA PRIBADI PEMOHON</span>
-                        <span className="italic font-normal text-[9px] pt-0.5">
-                            Mohon diisi dengan huruf cetak
-                        </span>
-                    </div>
 
                     <table className="w-full mb-3 border-separate border-spacing-y-1">
                         <tbody>
