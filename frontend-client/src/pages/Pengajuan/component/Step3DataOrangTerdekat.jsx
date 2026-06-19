@@ -162,7 +162,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                     type="text"
                                     name="nama_pasangan_kerabat"
                                     value={formData.nama_pasangan_kerabat || ""}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
                                     placeholder="Masukkan nama pasangan penjamin"
                                     className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                                 />
@@ -176,7 +176,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                     type="text"
                                     name="nik_pasangan_kerabat"
                                     value={formData.nik_pasangan_kerabat || ""}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
                                     placeholder="NIK (16 digit)"
                                     inputMode="numeric"
                                     maxLength={16}
@@ -193,7 +193,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             <textarea
                                 name="alamat_pasangan_kerabat"
                                 value={formData.alamat_pasangan_kerabat || ""}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 rows="3"
                                 placeholder="Masukkan alamat lengkap pasangan penjamin"
                                 className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm resize-none"
@@ -210,7 +210,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                     type="tel"
                                     name="telp_pasangan_kerabat"
                                     value={formData.telp_pasangan_kerabat || ""}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
                                     placeholder="Masukkan nomor telepon aktif"
                                     className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                                 />
