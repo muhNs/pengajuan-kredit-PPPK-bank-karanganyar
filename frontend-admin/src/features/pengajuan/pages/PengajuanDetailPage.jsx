@@ -177,15 +177,9 @@ export default function PengajuanDetailPage() {
       <div className="print:hidden space-y-6">
         {/* HEADER AREA */}
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <PengajuanDetailHeader pengajuan={detailData} />
+          <PengajuanDetailHeader pengajuan={detailData} onBack={handleBack} />
 
           <div className="flex flex-wrap gap-3">
-            <button
-              onClick={handleBack}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-            >
-              Kembali
-            </button>
 
             {/* Tombol Cetak Dokumen / Download PDF */}
             <button

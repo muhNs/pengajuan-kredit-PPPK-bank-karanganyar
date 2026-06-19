@@ -2,11 +2,11 @@ import { z } from "zod";
 
 export const createPengajuanSchema = z.object({
   // --- DATA DIRI ---
-  nama_lengkap: z.string().min(3),
-  alamat: z.string().min(5),
-  kode_pos: z.string().min(4),
-  no_handphone: z.string().min(10),
-  email: z.string().email(),
+  nama_lengkap: z.string().min(3, "Nama lengkap minimal 3 karakter"),
+  alamat: z.string().min(5, "Alamat minimal 5 karakter"),
+  kode_pos: z.string().min(4, "Kode pos tidak valid"),
+  no_handphone: z.string().min(10, "Nomor handphone minimal 10 digit"),
+  email: z.string().email("Format email tidak valid").or(z.literal('')),
   nik: z.string().length(16, "NIK harus 16 digit"),
   npwp: z.string().optional(),
   nama_ibu_kandung: z.string().min(3),
