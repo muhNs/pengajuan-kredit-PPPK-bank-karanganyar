@@ -11,14 +11,15 @@ import TemplateCetakF4 from './TemplateCetakF4';
 import { usePengajuan } from '../hooks/usePengajuan';
 
 const INITIAL_FORM_DATA = {
-    // Step 1
+    // Step 1 — nama field harus sama dengan atribut `name` di komponen Step1DataDiri
     nama: '', email: '', nik: '', npwp: '', no_telp: '', alamat: '', kode_pos: '', nama_ibu: '',
-    status_rumah: '', status_pernikahan: '', jenis_kelamin: '', nama_kerabat: '', nik_kerabat: '', alamat_kerabat: '', telp_kerabat: '',
+    status_rumah_id: '', status_pernikahan_id: '', jenis_kelamin_id: '', nama_kerabat: '', nik_kerabat: '', alamat_kerabat: '', telp_kerabat: '',
     // Step 2 (Opsional)
     nama_pasangan: '', nik_pasangan: '', alamat_pasangan: '', telp_pasangan: '',
-    // Step 3
-    nama_penjamin: '', nik_penjamin: '', alamat_penjamin: '', telp_penjamin: '', penjamin_hubungan_kerabat: '', nama_pasangan_penjamin: '', nik_pasangan_penjamin: '', alamat_pasangan_penjamin: '', telp_pasangan_penjamin: '',
-    // Step 4
+    // Step 3 — nama field harus sama dengan atribut `name` di komponen Step3DataOrangTerdekat
+    nama_penjamin: '', nik_penjamin: '', alamat_penjamin: '', telp_penjamin: '', penjamin_hubungan_kerabat: '',
+    nama_pasangan_penjamin: '', nik_pasangan_penjamin: '', alamat_pasangan_penjamin: '', telp_pasangan_penjamin: '',
+    // Step 4 — nama field harus sama dengan atribut `name` di komponen Step4DataPegawaiPendapatan
     instansi: '', jabatan: '', nip: '', pendapatan_tetap: '', pendapatan_tidak_tetap: '',
     // Step 5
     penggunaan_kredit: '', nominal_kredit: '', tenor_kredit: '',
@@ -70,9 +71,10 @@ export default function FormPengajuan() {
             payload.append("nik", formData.nik);
             if (formData.npwp) payload.append("npwp", formData.npwp);
             payload.append("nama_ibu_kandung", formData.nama_ibu);
-            payload.append("status_pernikahan_id", formData.status_pernikahan);
-            payload.append("status_rumah_id", formData.status_rumah);
-            payload.append("jenis_kelamin_id", formData.jenis_kelamin);
+            // FIX: baca dari formData.status_pernikahan_id (sesuai name= di Step1DataDiri)
+            payload.append("status_pernikahan_id", formData.status_pernikahan_id);
+            payload.append("status_rumah_id", formData.status_rumah_id);
+            payload.append("jenis_kelamin_id", formData.jenis_kelamin_id);
             payload.append("nama_kerabat", formData.nama_kerabat);
             payload.append("nik_kerabat", formData.nik_kerabat);
             payload.append("alamat_kerabat", formData.alamat_kerabat);
@@ -90,10 +92,11 @@ export default function FormPengajuan() {
             payload.append("penjamin_nik", formData.nik_penjamin);
             payload.append("penjamin_no_telepon", formData.telp_penjamin);
             payload.append("penjamin_hubungan_kerabat", formData.penjamin_hubungan_kerabat);
-            payload.append("nama_pasangan_penjamin", formData.nama_pasangan_penjamin);
-            payload.append("nik_pasangan_penjamin", formData.nik_pasangan_penjamin);
-            payload.append("alamat_pasangan_penjamin", formData.alamat_pasangan_penjamin);
-            payload.append("telp_pasangan_penjamin", formData.telp_pasangan_penjamin);
+            // FIX: nama key harus sesuai Zod schema backend (penjamin_nama_pasangan, dst)
+            if (formData.nama_pasangan_penjamin) payload.append("penjamin_nama_pasangan", formData.nama_pasangan_penjamin);
+            if (formData.nik_pasangan_penjamin) payload.append("penjamin_nik_pasangan", formData.nik_pasangan_penjamin);
+            if (formData.alamat_pasangan_penjamin) payload.append("penjamin_alamat_pasangan", formData.alamat_pasangan_penjamin);
+            if (formData.telp_pasangan_penjamin) payload.append("penjamin_no_telepon_pasangan", formData.telp_pasangan_penjamin);
 
             // 4. Data Pekerjaan
             payload.append("instansi_id", formData.instansi);
