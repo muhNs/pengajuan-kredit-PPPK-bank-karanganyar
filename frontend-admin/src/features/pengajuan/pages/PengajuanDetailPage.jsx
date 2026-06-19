@@ -88,7 +88,12 @@ export default function PengajuanDetailPage() {
 
   // Fungsi Cetak / Download PDF
   const handlePrint = () => {
+    const originalTitle = document.title;
+    document.title = `SiKredit PPPK - PT BPR Bank Karanganyar - ${mappedFormData.nama || 'Pemohon'}`;
     window.print();
+    setTimeout(() => {
+        document.title = originalTitle;
+    }, 500);
   };
 
   const safeData = detailData?.data ? detailData.data : detailData || {};
@@ -140,10 +145,9 @@ export default function PengajuanDetailPage() {
         alamat_penjamin: detailData.data_penjamin?.alamat || "",
 
         // --- DATA PASANGAN PENJAMIN ---
-        // Perhatikan: di file document Anda tertulis 'no_ktp_pasangan_penjamin', bukan 'nik'
-        nama_pasangan_penjamin: detailData.nama_pasangan_penjamin || "",
-        nik_pasangan_penjamin: detailData.no_ktp_pasangan_penjamin || "",
-        alamat_pasangan_penjamin: detailData.alamat_pasangan_penjamin || "",
+        nama_pasangan_penjamin: detailData.data_penjamin?.nama_pasangan_penjamin || "",
+        nik_pasangan_penjamin: detailData.data_penjamin?.nik_pasangan_penjamin || "",
+        alamat_pasangan_penjamin: detailData.data_penjamin?.alamat_pasangan_penjamin || "",
 
         // --- LOGIKA DINAMIS CETAK ---
         // Cek apakah statusnya mengandung kata "Belum" atau "Lajang"

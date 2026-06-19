@@ -183,7 +183,14 @@ export default function FormPengajuan() {
                     {/* TOMBOL CETAK MENGARAH KE TEMPLATE */}
                     <div className="flex justify-center mb-10">
                         <button
-                            onClick={() => window.print()}
+                            onClick={() => {
+                                const originalTitle = document.title;
+                                document.title = `SiKredit PPPK - PT BPR Bank Karanganyar - ${formData.nama || 'Pemohon'}`;
+                                window.print();
+                                setTimeout(() => {
+                                    document.title = originalTitle;
+                                }, 500);
+                            }}
                             className="bg-[#152042] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#1a2853] transition-all flex items-center gap-2 shadow-lg shadow-[#152042]/20"
                         >
                             <FileText className="w-5 h-5" />

@@ -20,15 +20,15 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
 
   // Ambil datanya, siapkan nilai "fallback" berupa titik-titik jika data kosong/belum dipilih
   const namaKepala =
-    instansiTerpilih?.nama_kepala ||
+    instansiTerpilih?.nama_kepala_dinas ||
     "...................................................";
   const nipKepala =
-    instansiTerpilih?.nip_kepala || "..............................";
+    instansiTerpilih?.nip_kepala_dinas || "..............................";
   const namaBendahara =
-    instansiTerpilih?.nama_bendahara ||
+    instansiTerpilih?.nama_bendahara_dinas ||
     "...................................................";
   const nipBendahara =
-    instansiTerpilih?.nip_bendahara || "..............................";
+    instansiTerpilih?.nip_bendahara_dinas || "..............................";
 
   return (
     <div
@@ -112,10 +112,10 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
         {/* =====================================================================
                     REVISI: Memperbesar logo (h-10) dan menyesuaikan padding banner (py-1.5)
                     ===================================================================== */}
-        <div className="flex bg-[#CC0000] text-white py-1.5 px-3 items-center justify-between mb-4">
+        <div className="flex bg-[#CC0000] text-white py-1.5 px-3 items-center justify-between mb-2">
           <div className="w-[40%] flex items-center">
             <img
-              src="/images/f-logo.png"
+              src="/f-logo.png"
               alt="Logo Bank Karanganyar"
               className="h-10 object-contain"
             />
@@ -128,7 +128,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
         </div>
 
         {/* Surat Kepada */}
-        <div className="flex justify-between mb-4">
+        <div className="flex justify-between mb-2">
           <div>
             <p>Kepada Yth,</p>
             <p>Direksi PT BPR Bank Karanganyar</p>
@@ -139,21 +139,21 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
         </div>
 
         <div className="mb-2">
-          <p className="mb-1">Dengan hormat,</p>
-          <p className="mb-2 text-justify">
-            Dengan ini kami mengajukan Permohonan Kredit Karyawan Kepada PT BPR
-            Bank Karanganyar dengan data kami sampaikan dengan sebenar-benarnya
-            dan kami sanggup mempertanggung jawabkan kebenaran data secara hukum
-            sebagai berikut :
-          </p>
-
           {/* DATA PRIBADI PEMOHON */}
-          <div className="bg-[#CC0000] text-white font-bold px-2 py-0.5 flex justify-between mb-1.5 mt-3">
+          <div className="bg-[#CC0000] text-white font-bold px-2 py-0.5 flex justify-between mb-1 mt-1">
             <span>DATA PRIBADI PEMOHON</span>
             <span className="italic font-normal text-[9px] pt-0.5">
               Mohon diisi dengan huruf cetak
             </span>
           </div>
+
+          <p className="mb-0.5">Dengan hormat,</p>
+          <p className="mb-1 text-justify">
+            Dengan ini kami mengajukan Permohonan Kredit Karyawan Kepada PT BPR
+            Bank Karanganyar dengan data kami sampaikan dengan sebenar-benarnya
+            dan kami sanggup mempertanggung jawabkan kebenaran data secara hukum
+            sebagai berikut :
+          </p>
 
           <table className="w-full mb-3 border-separate border-spacing-y-1">
             <tbody>
@@ -251,14 +251,14 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                 <td className="w-[32%]">Nama Instansi</td>
                 <td className="w-[2%]">:</td>
                 <td className="w-[66%] uppercase garis-bawah">
-                  {formData.instansi || "\u00A0"}
+                  {instansiTerpilih?.nama_instansi || "\u00A0"}
                 </td>
               </tr>
               <tr>
                 <td>Alamat Instansi / Kantor</td>
                 <td>:</td>
                 <td className="uppercase garis-bawah">
-                  {formData.alamat_instansi || "\u00A0"}
+                  {instansiTerpilih?.alamat || "\u00A0"}
                 </td>
               </tr>
               <tr>
@@ -331,7 +331,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
           <div className="bg-[#CC0000] text-white font-bold px-2 py-0.5 mb-1.5">
             DATA JAMINAN
           </div>
-          <table className="w-full mb-4 border-separate border-spacing-y-1">
+          <table className="w-full mb-1 border-separate border-spacing-y-1">
             <tbody>
               <tr>
                 <td className="w-[32%]">Jaminan berupa</td>
@@ -371,7 +371,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
           </table>
         </div>
 
-        <p className="text-justify mb-5">
+        <p className="text-justify mb-2 leading-[1.1]">
           Demikian Permohonan Kredit Kami ajukan dan kami memberikan kuasa penuh
           kepada bank untuk memeriksa kebenaran informasi dan dokumen yang kami
           berikan. Saya bersedia dan akan mentaati segala persyaratan dan
@@ -381,10 +381,10 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
         </p>
 
         {/* TATA LETAK TANDA TANGAN 1 */}
-        <div className="avoid-break flex justify-between text-center mt-6 mb-8">
+        <div className="avoid-break flex justify-between text-center mt-2 mb-2">
           <div className="w-1/3 flex flex-col justify-between items-center">
             <p>Pemilik Jaminan / Penjamin</p>
-            <div className="h-16"></div>
+            <div className="h-10"></div>
             <p className="uppercase">
               ({" "}
               <span className="garis-bawah inline-block min-w-[140px] text-center font-bold">
@@ -395,7 +395,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
           </div>
           <div className="w-1/3 flex flex-col justify-between items-center">
             <p>Mengetahui Suami / Istri</p>
-            <div className="h-16"></div>
+            <div className="h-10"></div>
             <p className="uppercase">
               ({" "}
               <span className="garis-bawah inline-block min-w-[140px] font-bold text-center">
@@ -406,7 +406,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
           </div>
           <div className="w-1/3 flex flex-col justify-between items-center">
             <p>Pemohon</p>
-            <div className="h-16"></div>
+            <div className="h-10"></div>
             <div>
               <p className="uppercase font-bold underline leading-tight">
                 {formData.nama || "..........................................."}
@@ -419,13 +419,13 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
         </div>
 
         {/* TATA LETAK TANDA TANGAN 2 */}
-        <div className="avoid-break flex justify-between text-center mb-6">
+        <div className="avoid-break flex justify-between text-center mb-1">
           <div className="w-1/3 flex flex-col justify-between items-center">
             <div className="leading-tight">
               <p>Menyetujui,</p>
               <p>Plh. KEPALA DINAS / INSTANSI</p>
             </div>
-            <div className="h-16"></div>
+            <div className="h-10"></div>
             <div>
               <p className="underline leading-tight font-bold uppercase">
                 {namaKepala}
@@ -438,7 +438,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
             <div className="leading-tight">
               <p>Bendahara Gaji,</p>
             </div>
-            <div className="h-16"></div>
+            <div className="h-10"></div>
             <div>
               <p className="underline leading-tight font-bold uppercase">
                 {namaBendahara}
@@ -465,7 +465,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                 <br />
                 PT BPR Bank Karanganyar
               </p>
-              <div className="h-10"></div>
+              <div className="h-8"></div>
               <p className="border-b border-solid border-black mx-auto w-[80%]"></p>
             </div>
             <div className="w-1/3 text-center">
@@ -474,7 +474,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                 <br />
                 PT BPR Bank Karanganyar
               </p>
-              <div className="h-10"></div>
+              <div className="h-8"></div>
               <p className="border-b border-solid border-black mx-auto w-[80%]"></p>
             </div>
           </div>
@@ -578,7 +578,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
               <td>4.</td>
               <td>Nama</td>
               <td>:</td>
-              <td className="garis-bawah">
+              <td className="garis-bawah uppercase font-bold">
                 {formData.nama_pasangan_penjamin || "\u00A0"}
               </td>
               <td className="italic text-right">( Istri/Suami Penjamin )</td>
@@ -587,7 +587,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
               <td></td>
               <td>Alamat</td>
               <td>:</td>
-              <td colSpan="2" className="garis-bawah">
+              <td colSpan="2" className="garis-bawah uppercase">
                 {formData.alamat_pasangan_penjamin || "\u00A0"}
               </td>
             </tr>
@@ -595,7 +595,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
               <td className="pb-3"></td>
               <td className="pb-3">Nomor KTP</td>
               <td className="pb-3">:</td>
-              <td colSpan="2" className="pb-3 garis-bawah">
+              <td colSpan="2" className="pb-3 garis-bawah uppercase">
                 {formData.nik_pasangan_penjamin || "\u00A0"}
               </td>
             </tr>
@@ -649,7 +649,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
         <table className="avoid-break w-full border-collapse border border-black h-28">
           <tbody>
             <tr>
-              {/* Kolom 1: Selalu Nama Pemohon */}
+              {/* Kolom 1: Debitur/Pemohon */}
               <td className="border border-black w-1/4 align-bottom p-2 h-28">
                 Nama:{" "}
                 <span className="uppercase garis-bawah inline-block min-w-[120px] text-center font-bold">
@@ -657,31 +657,27 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                 </span>
               </td>
 
-              {/* Kolom 2: Jika belum menikah -> Kerabat. Jika menikah -> Pasangan */}
+              {/* Kolom 2: Istri/Suami Debitur */}
               <td className="border border-black w-1/4 align-bottom p-2 h-28">
                 Nama:{" "}
                 <span className="uppercase garis-bawah inline-block min-w-[120px] text-center font-bold">
-                  {formData.is_belum_menikah
-                    ? formData.nama_kerabat || "\u00A0"
-                    : formData.nama_pasangan || "\u00A0"}
+                  {formData.nama_pasangan || "\u00A0"}
                 </span>
               </td>
 
-              {/* Kolom 3: Jika belum menikah -> Kosong. Jika menikah -> Kerabat */}
+              {/* Kolom 3: Penjamin */}
               <td className="border border-black w-1/4 align-bottom p-2 h-28">
                 Nama:{" "}
                 <span className="uppercase garis-bawah inline-block min-w-[120px] text-center font-bold">
-                  {!formData.is_belum_menikah
-                    ? formData.nama_kerabat || "\u00A0"
-                    : "\u00A0"}
+                  {formData.nama_penjamin || "\u00A0"}
                 </span>
               </td>
 
-              {/* Kolom 4: Selalu Kosong */}
+              {/* Kolom 4: Istri/Suami Penjamin */}
               <td className="border border-black w-1/4 align-bottom p-2 h-28">
                 Nama:{" "}
-                <span className="garis-bawah inline-block min-w-[120px]">
-                  &nbsp;
+                <span className="uppercase garis-bawah inline-block min-w-[120px] text-center font-bold">
+                  {formData.nama_pasangan_penjamin || "\u00A0"}
                 </span>
               </td>
             </tr>
@@ -728,7 +724,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
               <td>Dinas</td>
               <td>:</td>
               <td className="uppercase garis-bawah">
-                {formData.instansi || "\u00A0"}
+                {instansiTerpilih?.nama_instansi || "\u00A0"}
               </td>
             </tr>
             <tr>
