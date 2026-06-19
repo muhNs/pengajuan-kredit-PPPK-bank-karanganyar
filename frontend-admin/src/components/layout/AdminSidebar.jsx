@@ -12,11 +12,13 @@ import {
 import { useMasterDataStore } from "../../features/master-data/store/masterDataStore";
 import { useAuth } from "../../features/auth/hooks/useAuth";
 import { ProfileCard } from "../ui/ProfileCard";
+import { useUIStore } from "../../store/uiStore";
 
 export default function AdminSidebar() {
   const location = useLocation();
   const { categories } = useMasterDataStore();
   const { handleLogout } = useAuth();
+  const { isSidebarOpen, closeSidebar } = useUIStore();
 
   const [isMasterOpen, setIsMasterOpen] = useState(
     location.pathname.includes("master-data")
@@ -60,7 +62,16 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="w-[280px] bg-[#0B1121] text-white flex flex-col shadow-2xl z-20 shrink-0 border-r border-white/5 relative overflow-hidden">
+    <>
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-[#0B1121]/50 backdrop-blur-sm z-40 lg:hidden"
+          onClick={closeSidebar}
+        />
+      )}
+
+      <aside className={`w-[280px] bg-[#0B1121] text-white flex flex-col shadow-2xl z-50 shrink-0 border-r border-white/5 overflow-hidden transition-transform duration-300 lg:translate-x-0 lg:relative fixed inset-y-0 left-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
       
       {/* Profile Card */}
       <ProfileCard />
@@ -77,7 +88,13 @@ export default function AdminSidebar() {
             return (
               <div key={item.to}>
                 <div
-                  onClick={() => isMaster && setIsMasterOpen(!isMasterOpen)}
+                  onClick={() => {
+                    if (isMaster) {
+                      setIsMasterOpen(!isMasterOpen);
+                    } else {
+                      closeSidebar();
+                    }
+                  }}
                   className="block cursor-pointer"
                 >
                   <Link
@@ -118,6 +135,7 @@ export default function AdminSidebar() {
                         <Link
                           key={child.to}
                           to={child.to}
+                          onClick={() => closeSidebar()}
                           className={`block py-2.5 text-[13px] transition-all ${childActive ? "text-[#FFC800] font-black" : "text-gray-500 hover:text-white"}`}
                         >
                           <div className="flex items-center gap-3">
@@ -159,5 +177,6 @@ export default function AdminSidebar() {
 
       <div className="h-10 shrink-0" />
     </aside>
+    </>
   );
 }

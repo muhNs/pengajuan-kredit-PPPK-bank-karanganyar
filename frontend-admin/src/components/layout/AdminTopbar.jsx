@@ -12,7 +12,7 @@ const PAGE_TITLES = {
 
 export default function AdminTopbar() {
   const location = useLocation();
-  const { globalSearch, setGlobalSearch } = useUIStore();
+  const { globalSearch, setGlobalSearch, toggleSidebar } = useUIStore();
   const user = useAuthStore((state) => state.user);
   const pageTitle =
     Object.entries(PAGE_TITLES)
@@ -23,7 +23,7 @@ export default function AdminTopbar() {
     <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0 z-10">
       <div className="flex items-center gap-8 flex-1">
         {/* Menu Toggle (Mobile) */}
-        <button className="lg:hidden p-2 hover:bg-gray-50 rounded-lg">
+        <button onClick={toggleSidebar} className="lg:hidden p-2 hover:bg-gray-50 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
