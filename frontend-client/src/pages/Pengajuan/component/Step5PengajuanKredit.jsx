@@ -42,7 +42,7 @@ export default function Step5PengajuanKredit({ formData, setFormData }) {
             transition={{ duration: 0.3 }}
             className="space-y-6"
         >
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-[450px] flex flex-col">
                 <div className="mb-6 border-b border-gray-100 pb-4">
                     <h2 className="text-xl font-bold text-gray-800 flex items-center gap-3">
                         <span className="bg-[#FFC800] text-[#0B1121] w-8 h-8 rounded-lg flex items-center justify-center text-sm">5</span>
@@ -66,7 +66,7 @@ export default function Step5PengajuanKredit({ formData, setFormData }) {
                             onChange={handleInputChange}
                             required
                             placeholder="Contoh: Renovasi Rumah, Biaya Pendidikan, Modal Usaha"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
                         />
                     </div>
 
@@ -82,7 +82,7 @@ export default function Step5PengajuanKredit({ formData, setFormData }) {
                             onChange={handleInputChange}
                             required
                             placeholder="Rp 0"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all font-bold text-[#0B1121] text-lg"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all font-bold text-[#0B1121] text-lg"
                         />
                     </div>
 
@@ -99,7 +99,7 @@ export default function Step5PengajuanKredit({ formData, setFormData }) {
                                 onChange={handleInputChange}
                                 required
                                 placeholder="Contoh: 12"
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all pr-16"
+                                className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all pr-16"
                             />
                             {/* Label "Bulan" statis di dalam input */}
                             <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">

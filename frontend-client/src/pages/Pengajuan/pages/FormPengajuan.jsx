@@ -53,6 +53,12 @@ export default function FormPengajuan() {
                 return;
             }
 
+            // Validasi Persetujuan
+            if (!formData.setuju_pernyataan) {
+                alert("Anda harus mencentang kotak persetujuan syarat dan ketentuan sebelum mengirim pengajuan.");
+                return;
+            }
+
             const payload = new FormData();
 
             // 1. Data Diri
@@ -189,28 +195,34 @@ export default function FormPengajuan() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto relative pb-24">
-            {/* PROGRESS BAR */}
-            <div className="mb-8 relative hidden md:block">
-                <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -translate-y-1/2 rounded-full"></div>
-                <div 
-                    className="absolute top-1/2 left-0 h-1 bg-[#FFC800] -translate-y-1/2 rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
-                ></div>
-                
-                <div className="relative flex justify-between">
-                    {STEPS.map((s) => (
-                        <div key={s.id} className="flex flex-col items-center">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 border-4 border-[#f4f7fb] ${
-                                step >= s.id ? 'bg-[#FFC800] text-[#0B1121] shadow-lg shadow-[#FFC800]/20' : 'bg-gray-200 text-gray-400'
-                            }`}>
-                                {step > s.id ? <CheckCircle size={18} /> : s.id}
+        <div className="max-w-4xl mx-auto w-full relative pb-24 pt-8 md:pt-12 px-4 md:px-0">
+            {/* PROGRESS BAR CARD */}
+            <div className="mb-10 w-full hidden md:block bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div className="relative">
+                    {/* Garis Latar Belakang */}
+                    <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -translate-y-1/2 rounded-full"></div>
+                    
+                    {/* Garis Progress */}
+                    <div 
+                        className="absolute top-1/2 left-0 h-1 bg-[#FFC800] -translate-y-1/2 rounded-full transition-all duration-500 ease-out"
+                        style={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
+                    ></div>
+                    
+                    {/* Lingkaran Steps */}
+                    <div className="relative flex justify-between">
+                        {STEPS.map((s) => (
+                            <div key={s.id} className="flex flex-col items-center relative z-10">
+                                <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 border-4 border-white ${
+                                    step >= s.id ? 'bg-[#FFC800] text-[#0B1121] shadow-lg shadow-[#FFC800]/20' : 'bg-gray-100 text-gray-400'
+                                }`}>
+                                    {step > s.id ? <CheckCircle size={18} strokeWidth={3} /> : s.id}
+                                </div>
+                                <span className={`absolute top-12 text-xs font-semibold whitespace-nowrap text-center ${step >= s.id ? 'text-[#0B1121]' : 'text-gray-400'}`}>
+                                    {s.title}
+                                </span>
                             </div>
-                            <span className={`mt-2 text-xs font-semibold ${step >= s.id ? 'text-[#0B1121]' : 'text-gray-400'}`}>
-                                {s.title}
-                            </span>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -236,11 +248,11 @@ export default function FormPengajuan() {
             </AnimatePresence>
 
             {/* NAVIGATION BUTTONS */}
-            <div className="fixed md:relative bottom-0 left-0 right-0 bg-white md:bg-transparent border-t md:border-none border-gray-200 p-4 md:p-0 md:mt-8 flex justify-between gap-4 z-50 md:z-auto">
+            <div className="mt-auto pt-8 flex justify-between gap-4 w-full">
                 <button
                     type="button"
                     onClick={handleBack}
-                    className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all ${
+                    className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl h-[52px] font-semibold shrink-0 transition-all ${
                         step === 1 
                         ? 'opacity-0 pointer-events-none' 
                         : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 shadow-sm'
@@ -253,8 +265,14 @@ export default function FormPengajuan() {
                 <button
                     type="button"
                     onClick={handleNext}
-                    disabled={isSubmitting}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-[#FFC800] text-[#0B1121] px-8 py-3.5 rounded-xl font-bold hover:bg-[#F0BC00] transition-all shadow-lg shadow-[#FFC800]/20 disabled:opacity-70 disabled:cursor-not-allowed"
+                    disabled={isSubmitting || (step === 6 && !formData.setuju_pernyataan)}
+                    className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl h-[52px] font-bold shrink-0 transition-all ${
+                        (step === 6 && !formData.setuju_pernyataan)
+                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed border border-gray-300'
+                            : isSubmitting
+                                ? 'bg-[#FFC800] text-[#0B1121] opacity-70 cursor-not-allowed shadow-lg shadow-[#FFC800]/20'
+                                : 'bg-[#FFC800] text-[#0B1121] hover:bg-[#F0BC00] shadow-lg shadow-[#FFC800]/20'
+                    }`}
                 >
                     {isSubmitting ? (
                         <div className="flex items-center gap-2">

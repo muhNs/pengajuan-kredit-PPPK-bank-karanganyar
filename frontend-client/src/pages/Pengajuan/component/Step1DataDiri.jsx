@@ -28,13 +28,22 @@ export default function Step1DataDiri({
     };
 
     return (
-        <div className="space-y-10 animate-in fade-in duration-500">
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-10 animate-in fade-in duration-500"
+        >
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-[450px] flex flex-col">
             <div>
-                <div className="flex items-center gap-4 mb-8">
-                    <h3 className="text-lg font-bold text-[#0B1171] whitespace-nowrap">
+                <div className="mb-6 border-b border-gray-100 pb-4">
+                    <h2 className="text-xl font-bold text-gray-800 flex items-center gap-3">
+                        <span className="bg-[#FFC800] text-[#0B1121] w-8 h-8 rounded-lg flex items-center justify-center text-sm">
+                            1
+                        </span>
                         Informasi Pribadi
-                    </h3>
-                    <div className="w-full h-[1px] bg-gray-200"></div>
+                    </h2>
                 </div>
 
                 <div className="space-y-6">
@@ -50,7 +59,7 @@ export default function Step1DataDiri({
                                 value={formData.nama || ""}
                                 onChange={handleChange}
                                 placeholder="Masukkan nama lengkap"
-                                className="w-full border border-gray-300 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all text-sm"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all text-sm"
                             />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -63,7 +72,7 @@ export default function Step1DataDiri({
                                 value={formData.alamat || ""}
                                 onChange={handleChange}
                                 placeholder="Masukkan alamat lengkap"
-                                className="w-full border border-gray-300 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all text-sm"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all text-sm"
                             />
                         </div>
                     </div>
@@ -80,7 +89,7 @@ export default function Step1DataDiri({
                                 value={formData.kode_pos || ""}
                                 onChange={handleChange}
                                 placeholder="57xxx"
-                                className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                             />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -93,7 +102,7 @@ export default function Step1DataDiri({
                                 value={formData.email || ""}
                                 onChange={handleChange}
                                 placeholder="Masukkan email aktif"
-                                className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                             />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -106,7 +115,7 @@ export default function Step1DataDiri({
                                 value={formData.no_telp || ""}
                                 onChange={handleChange}
                                 placeholder="Contoh: 08123456789"
-                                className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                             />
                         </div>
                     </div>
@@ -121,7 +130,7 @@ export default function Step1DataDiri({
                                 name="jenis_kelamin"
                                 value={formData.jenis_kelamin || ""}
                                 onChange={handleChange}
-                                className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none text-gray-500 text-sm bg-white transition-all"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none text-gray-500 text-sm bg-white transition-all"
                             >
                                 <option value="">Pilih jenis kelamin</option>
                                 <option value="Laki-laki">Laki-laki</option>
@@ -138,7 +147,7 @@ export default function Step1DataDiri({
                                 value={formData.nik || ""}
                                 onChange={handleChange}
                                 placeholder="NIK (16 digit)"
-                                className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                             />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -151,7 +160,7 @@ export default function Step1DataDiri({
                                 value={formData.nama_ibu || ""}
                                 onChange={handleChange}
                                 placeholder="Nama lengkap ibu kandung"
-                                className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                             />
                         </div>
                     </div>
@@ -174,7 +183,7 @@ export default function Step1DataDiri({
                             name="status_rumah"
                             value={formData.status_rumah || ""}
                             onChange={handleChange}
-                            className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none text-gray-500 text-sm bg-white transition-all"
+                            className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none text-gray-500 text-sm bg-white transition-all"
                         >
                             <option value="">Pilih status</option>
                             <option value="Milik Sendiri">Milik Sendiri</option>
@@ -189,7 +198,7 @@ export default function Step1DataDiri({
                             name="status_pernikahan"
                             value={formData.status_pernikahan || ""}
                             onChange={handleChange}
-                            className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none text-gray-500 text-sm bg-white transition-all"
+                            className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none text-gray-500 text-sm bg-white transition-all"
                         >
                             <option value="">Pilih status</option>
                             <option value="Belum Menikah">Belum Menikah</option>
@@ -206,7 +215,7 @@ export default function Step1DataDiri({
                             value={formData.npwp || ""}
                             onChange={handleChange}
                             placeholder="Nomor NPWP"
-                            className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                            className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                         />
                     </div>
                 </div>
@@ -233,7 +242,7 @@ export default function Step1DataDiri({
                             value={formData.nama_kerabat || ""}
                             onChange={handleChange}
                             placeholder="Masukkan nama kerabat"
-                            className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                            className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                         />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -246,7 +255,7 @@ export default function Step1DataDiri({
                             value={formData.nik_kerabat || ""}
                             onChange={handleChange}
                             placeholder="NIK Kerabat (16 digit)"
-                            className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                            className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                         />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -259,7 +268,7 @@ export default function Step1DataDiri({
                             value={formData.alamat_kerabat || ""}
                             onChange={handleChange}
                             placeholder="Masukkan alamat lengkap kerabat"
-                            className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                            className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                         />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -272,11 +281,12 @@ export default function Step1DataDiri({
                             value={formData.telp_kerabat || ""}
                             onChange={handleChange}
                             placeholder="Contoh: 08123456789"
-                            className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                            className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                         />
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        </motion.div>
     );
 }

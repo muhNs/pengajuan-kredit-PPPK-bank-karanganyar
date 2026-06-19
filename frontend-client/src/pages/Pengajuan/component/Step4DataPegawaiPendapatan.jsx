@@ -44,7 +44,7 @@ export default function Step4DataPegawaiPendapatan({ formData, setFormData, mast
             transition={{ duration: 0.3 }}
             className="space-y-6"
         >
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-[450px] flex flex-col">
                 <div className="mb-6 border-b border-gray-100 pb-4">
                     <h2 className="text-xl font-bold text-gray-800 flex items-center gap-3">
                         <span className="bg-[#FFC800] text-[#0B1121] w-8 h-8 rounded-lg flex items-center justify-center text-sm">4</span>
@@ -66,7 +66,7 @@ export default function Step4DataPegawaiPendapatan({ formData, setFormData, mast
                             value={formData.instansi}
                             onChange={handleInputChange}
                             required
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] bg-gray-50 outline-none transition-all"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] bg-gray-50 outline-none transition-all"
                         >
                             <option value="">-- Pilih Instansi / Dinas --</option>
                             {masterOptions?.instansi?.map((item) => (
@@ -92,7 +92,7 @@ export default function Step4DataPegawaiPendapatan({ formData, setFormData, mast
                             onChange={handleInputChange}
                             required
                             placeholder="Contoh: Staff Keuangan"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
                         />
                     </div>
 
@@ -108,7 +108,7 @@ export default function Step4DataPegawaiPendapatan({ formData, setFormData, mast
                             onChange={handleInputChange}
                             required
                             placeholder="Masukkan NIP Anda"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
                         />
                     </div>
 
@@ -124,7 +124,7 @@ export default function Step4DataPegawaiPendapatan({ formData, setFormData, mast
                             onChange={handleInputChange}
                             required
                             placeholder="Rp 0"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all font-semibold text-gray-700"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all font-semibold text-gray-700"
                         />
                     </div>
 
@@ -139,7 +139,7 @@ export default function Step4DataPegawaiPendapatan({ formData, setFormData, mast
                             value={formData.pendapatan_tidak_tetap}
                             onChange={handleInputChange}
                             placeholder="Rp 0"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all text-gray-700"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all text-gray-700"
                         />
                     </div>
                 </div>

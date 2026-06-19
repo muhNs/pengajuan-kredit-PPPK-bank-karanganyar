@@ -28,7 +28,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
             transition={{ duration: 0.3 }}
             className="space-y-6"
         >
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-[450px] flex flex-col">
                 <div className="mb-6 border-b border-gray-100 pb-4">
                     <h2 className="text-xl font-bold text-gray-800 flex items-center gap-3">
                         <span className="bg-[#FFC800] text-[#0B1121] w-8 h-8 rounded-lg flex items-center justify-center text-sm">
@@ -56,7 +56,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             onChange={handleInputChange}
                             required
                             placeholder="Contoh: Ahmad Hidayat"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
                         />
                     </div>
 
@@ -73,7 +73,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             onChange={handleInputChange}
                             required
                             placeholder="16 Digit Angka NIK"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
                         />
                     </div>
 
@@ -90,7 +90,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             onChange={handleInputChange}
                             required
                             placeholder="Contoh: 08123456789"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all"
                         />
                     </div>
 
@@ -105,7 +105,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             value={formData.hubungan_kerabat}
                             onChange={handleInputChange}
                             required
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] bg-gray-50 outline-none transition-all"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] bg-gray-50 outline-none transition-all"
                         >
                             <option value="">Pilih Hubungan Kekerabatan</option>
                             <option value="Orang Tua">Orang Tua</option>
@@ -132,7 +132,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             required
                             rows="2"
                             placeholder="Jalan, RT/RW, Kelurahan, Kecamatan"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all resize-none"
+                            className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] outline-none transition-all resize-none"
                         ></textarea>
                     </div>
                 </div>
@@ -164,7 +164,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                     value={formData.nama_pasangan_kerabat || ""}
                                     onChange={handleInputChange}
                                     placeholder="Masukkan nama pasangan penjamin"
-                                    className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                                    className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                                 />
                             </div>
 
@@ -180,7 +180,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                     placeholder="NIK (16 digit)"
                                     inputMode="numeric"
                                     maxLength={16}
-                                    className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                                    className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                                 />
                             </div>
                         </div>
@@ -196,7 +196,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                 onChange={handleInputChange}
                                 rows="3"
                                 placeholder="Masukkan alamat lengkap pasangan penjamin"
-                                className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm resize-none"
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm resize-none"
                             ></textarea>
                         </div>
 
@@ -212,7 +212,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                                     value={formData.telp_pasangan_kerabat || ""}
                                     onChange={handleInputChange}
                                     placeholder="Masukkan nomor telepon aktif"
-                                    className="w-full border border-gray-200 rounded-lg px-4 py-3.5 focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
+                                    className="w-full border border-gray-200 rounded-xl px-4 py-3 h-[50px] focus:border-[#0B1171] focus:ring-1 focus:ring-[#0B1171] outline-none transition-all placeholder-gray-400 text-sm"
                                 />
                             </div>
                             {/* Kolom kosong untuk menyeimbangkan grid */}
