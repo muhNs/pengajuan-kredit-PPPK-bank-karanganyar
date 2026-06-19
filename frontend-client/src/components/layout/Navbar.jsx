@@ -13,9 +13,9 @@ export default function Navbar() {
         <nav className="bg-[#122B88] sticky top-0 z-50 shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-300">
 
             {/* PERBAIKAN: Mengurangi padding di layar terkecil dari px-5 menjadi px-4 agar ruang lebih luas */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-10 lg:px-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-10 lg:px-12 w-full">
 
-                <div className="flex justify-between items-center h-[64px] md:h-[80px]">
+                <div className="flex justify-between items-center h-16 md:h-20">
 
                     <Link to="/" onClick={handleHomeClick} className="flex items-center gap-2.5 md:gap-4 cursor-pointer group">
                         {/* PERBAIKAN: Ukuran logo disesuaikan mengecil di HP */}

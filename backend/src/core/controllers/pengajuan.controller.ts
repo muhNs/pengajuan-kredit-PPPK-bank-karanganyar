@@ -68,8 +68,13 @@ export const createPengajuanController = async (
     });
   } catch (error: any) {
     if (error.name === "ZodError") {
-      // Tangkap error validasi form
-      return res.status(400).json({ error: JSON.parse(error.message) });
+      // Format error Zod menjadi pesan yang mudah dibaca
+      const errors = JSON.parse(error.message);
+      const errorMessages = errors.map((e: any) => {
+        const field = e.path?.join('.') || 'field';
+        return `${field}: ${e.message}`;
+      }).join('; ');
+      return res.status(400).json({ error: `Data tidak valid: ${errorMessages}` });
     }
     console.error("Gagal membuat pengajuan:", error);
     res

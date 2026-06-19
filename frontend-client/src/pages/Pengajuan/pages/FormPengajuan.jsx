@@ -76,7 +76,7 @@ export default function FormPengajuan() {
             payload.append("nama_kerabat", formData.nama_kerabat);
             payload.append("nik_kerabat", formData.nik_kerabat);
             payload.append("alamat_kerabat", formData.alamat_kerabat);
-            payload.append("telp_kerabat", formData.telp_kerabat);
+            payload.append("no_handphone_kerabat", formData.telp_kerabat);
 
             // 2. Data Pasangan
             if (formData.nama_pasangan) payload.append("pasangan_nama", formData.nama_pasangan);
@@ -197,8 +197,8 @@ export default function FormPengajuan() {
     return (
         <div className="max-w-4xl mx-auto w-full relative pb-24 pt-8 md:pt-12 px-4 md:px-0">
             {/* PROGRESS BAR CARD */}
-            <div className="mb-10 w-full hidden md:block bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
-                <div className="relative">
+            <div className="mb-8 md:mb-10 w-full bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div className="relative pb-6 md:pb-0">
                     {/* Garis Latar Belakang */}
                     <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -translate-y-1/2 rounded-full"></div>
                     
@@ -212,12 +212,14 @@ export default function FormPengajuan() {
                     <div className="relative flex justify-between">
                         {STEPS.map((s) => (
                             <div key={s.id} className="flex flex-col items-center relative z-10">
-                                <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 border-4 border-white ${
+                                <div className={`w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-all duration-300 border-[3px] md:border-4 border-white ${
                                     step >= s.id ? 'bg-[#FFC800] text-[#0B1121] shadow-lg shadow-[#FFC800]/20' : 'bg-gray-100 text-gray-400'
                                 }`}>
-                                    {step > s.id ? <CheckCircle size={18} strokeWidth={3} /> : s.id}
+                                    {step > s.id ? <CheckCircle size={16} strokeWidth={3} className="md:w-[18px] md:h-[18px]" /> : s.id}
                                 </div>
-                                <span className={`absolute top-12 text-xs font-semibold whitespace-nowrap text-center ${step >= s.id ? 'text-[#0B1121]' : 'text-gray-400'}`}>
+                                <span className={`absolute top-10 md:top-12 text-[10px] md:text-xs font-semibold text-center w-14 md:w-auto md:whitespace-nowrap ${
+                                    step >= s.id ? 'text-[#0B1121]' : 'text-gray-400'
+                                } ${step === s.id ? 'block' : 'hidden sm:block'}`}>
                                     {s.title}
                                 </span>
                             </div>
@@ -229,7 +231,7 @@ export default function FormPengajuan() {
             {/* ERROR ALERT */}
             {error && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium">
-                    {error}
+                    ⚠️ {typeof error === 'string' ? error : 'Terjadi kesalahan. Silakan coba lagi.'}
                 </div>
             )}
 
@@ -248,17 +250,17 @@ export default function FormPengajuan() {
             </AnimatePresence>
 
             {/* NAVIGATION BUTTONS */}
-            <div className="mt-auto pt-8 flex justify-between gap-4 w-full">
+            <div className="mt-auto pt-6 md:pt-8 flex justify-between gap-3 md:gap-4 w-full">
                 <button
                     type="button"
                     onClick={handleBack}
-                    className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl h-[52px] font-semibold shrink-0 transition-all ${
+                    className={`flex-1 md:flex-none flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-6 py-3 md:py-3.5 rounded-xl h-12 md:h-[52px] text-sm md:text-base font-semibold shrink-0 transition-all ${
                         step === 1 
                         ? 'opacity-0 pointer-events-none' 
                         : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 shadow-sm'
                     }`}
                 >
-                    <ArrowLeft className="w-5 h-5" />
+                    <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
                     Kembali
                 </button>
 
@@ -266,7 +268,7 @@ export default function FormPengajuan() {
                     type="button"
                     onClick={handleNext}
                     disabled={isSubmitting || (step === 6 && !formData.setuju_pernyataan)}
-                    className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl h-[52px] font-bold shrink-0 transition-all ${
+                    className={`flex-1 md:flex-none flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-8 py-3 md:py-3.5 rounded-xl h-12 md:h-[52px] text-sm md:text-base font-bold shrink-0 transition-all ${
                         (step === 6 && !formData.setuju_pernyataan)
                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed border border-gray-300'
                             : isSubmitting
@@ -276,13 +278,13 @@ export default function FormPengajuan() {
                 >
                     {isSubmitting ? (
                         <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 border-2 border-[#0B1121]/20 border-t-[#0B1121] rounded-full animate-spin" />
-                            Memproses...
+                            <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-[#0B1121]/20 border-t-[#0B1121] rounded-full animate-spin" />
+                            <span className="text-sm md:text-base">Memproses...</span>
                         </div>
                     ) : (
                         <>
                             {step === 6 ? 'Kirim Pengajuan' : 'Selanjutnya'}
-                            {step < 6 && <ArrowRight className="w-5 h-5" />}
+                            {step < 6 && <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />}
                         </>
                     )}
                 </button>

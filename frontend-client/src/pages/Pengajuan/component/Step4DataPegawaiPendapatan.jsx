@@ -14,7 +14,9 @@ export default function Step4DataPegawaiPendapatan({ formData, setFormData, mast
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name } = e.target;
+        // Trim spasi dari copas agar tidak gagal validasi
+        const value = e.target.value.trim();
 
         // Validasi NIP (Hanya boleh angka)
         if (name === 'nip' && value !== '') {
