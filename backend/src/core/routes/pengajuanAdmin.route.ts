@@ -1,0 +1,1 @@
+// Daftarkan rute GET untuk dashboard analitik di bawah proteksi admin/CS

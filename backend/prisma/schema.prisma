@@ -1,0 +1,186 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// --- ENUMS ---
+enum Role {
+  ADMIN
+  CS
+}
+
+enum DocumentType {
+  KTP_KREDITUR
+  KTP_PASANGAN
+  KK
+  SURAT_NIKAH
+  IJASAH_TERAKHIR
+  SK
+  SURAT_NPWP
+}
+
+// --- AUTH ---
+model User {
+  id             Int            @id @default(autoincrement())
+  username       String         
+  email          String         @unique 
+  password       String         
+  role           Role           @default(ADMIN)
+  refresh_tokens RefreshToken[]
+}
+
+model RefreshToken {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  user         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  refreshToken String   @unique @db.VarChar(255)
+  exp_date     DateTime
+  created_at   DateTime @default(now())
+  deleted_at   DateTime? 
+}
+
+// --- MASTER DATA (CMS) ---
+model StatusRumah {
+  id          Int        @id @default(autoincrement())
+  kepemilikan String     @db.VarChar(100)
+  data_diri   DataDiri[]
+}
+
+model StatusPernikahan {
+  id        Int        @id @default(autoincrement())
+  status    String     @db.VarChar(100)
+  data_diri DataDiri[]
+}
+
+model JenisKelamin {
+  id        Int        @id @default(autoincrement())
+  gender    String     @db.VarChar(50)
+  data_diri DataDiri[]
+}
+
+model Instansi {
+  id                    Int             @id @default(autoincrement())
+  nama_instansi         String          @db.VarChar(255)
+  alamat                String          
+  nama_kepala_dinas     String          @db.VarChar(255)
+  nip_kepala_dinas      String          @db.VarChar(100)
+  nama_bendahara_dinas  String          @db.VarChar(255)
+  nip_bendahara_dinas   String          @db.VarChar(100)
+  data_pekerjaan        DataPekerjaan[]
+}
+
+// --- DATA NASABAH ---
+model DataDiri {
+  id                   Int              @id @default(autoincrement())
+  nama_lengkap         String           @db.VarChar(255)
+  alamat               String           @db.Text
+  kode_pos             String           @db.VarChar(10)
+  no_handphone         String           @db.VarChar(20)
+  email                String           @db.VarChar(150)
+  nik                  String           @db.VarChar(16)
+  npwp                 String?          @db.VarChar(20)
+  nama_ibu_kandung     String           @db.VarChar(255)
+  
+  nama_kerabat         String?          @db.VarChar(255)
+  alamat_kerabat       String?           @db.Text
+  no_handphone_kerabat String?           @db.VarChar(20)
+  nik_kerabat          String?           @db.VarChar(16)
+
+  status_pernikahan_id Int
+  status_pernikahan    StatusPernikahan @relation(fields: [status_pernikahan_id], references: [id])
+  status_rumah_id      Int
+  status_rumah         StatusRumah      @relation(fields: [status_rumah_id], references: [id])
+  jenis_kelamin_id     Int
+  jenis_kelamin        JenisKelamin     @relation(fields: [jenis_kelamin_id], references: [id])
+
+  pengajuan            DataPengajuanKredit[]
+}
+
+model DataPasangan {
+  id           Int                   @id @default(autoincrement())
+  nama         String                @db.VarChar(255)
+  alamat       String                @db.Text
+  nik          String                @db.VarChar(16)
+  no_telepon   String                @db.VarChar(20)
+  pengajuan    DataPengajuanKredit[]
+}
+
+model DataPenjamin {
+  id               Int                   @id @default(autoincrement())
+  nama             String                @db.VarChar(255)
+  alamat           String                @db.Text
+  nik              String                @db.VarChar(16)
+  no_telepon       String                @db.VarChar(20)
+  hubungan_kerabat String                @db.VarChar(100)
+
+  nama_pasangan_penjamin             String?                @db.VarChar(255)
+  alamat_pasangan_penjamin           String?                @db.Text
+  nik_pasangan_penjamin              String?                @db.VarChar(16)
+  no_telepon_pasangan_penjamin       String?                @db.VarChar(20)
+
+  pengajuan        DataPengajuanKredit[]
+}
+
+model DataPekerjaan {
+  id                     Int                   @id @default(autoincrement())
+  instansi_id            Int
+  instansi               Instansi              @relation(fields: [instansi_id], references: [id])
+  jabatan                String                @db.VarChar(255)
+  nip                    String                @db.VarChar(100)
+  divisi                 String?               @db.VarChar(255)
+  pendapatan_tetap       Decimal               @db.Decimal(15, 2)
+  pendapatan_tidak_tetap Decimal               @db.Decimal(15, 2)
+  pengajuan              DataPengajuanKredit[]
+}
+
+model BerkasPendukung {
+  id            Int                 @id @default(autoincrement())
+  pengajuan_id  Int
+  pengajuan     DataPengajuanKredit @relation(fields: [pengajuan_id], references: [id], onDelete: Cascade)
+  original_name String              @db.VarChar(255)
+  filename      String              @db.VarChar(255)
+  filepath      String              @db.Text
+  mime_type     String              @db.VarChar(100)
+  document_type DocumentType
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  deleted_at    DateTime?
+}
+
+// --- CORE DATA ---
+model DataPengajuanKredit {
+  id                Int               @id @default(autoincrement())
+  tujuan_kredit     String            @db.Text
+  nominal           Decimal           @db.Decimal(15, 2)
+  tenor             Int
+
+  status            String            @default("Menunggu Review")
+  // Foreign Keys
+  data_diri_id      Int
+  data_diri         DataDiri          @relation(fields: [data_diri_id], references: [id])
+  
+  data_pasangan_id  Int?              // Nullable karena tidak semua menikah
+  data_pasangan     DataPasangan?     @relation(fields: [data_pasangan_id], references: [id])
+  
+  data_penjamin_id  Int
+  data_penjamin     DataPenjamin      @relation(fields: [data_penjamin_id], references: [id])
+  
+  data_pekerjaan_id Int
+  data_pekerjaan    DataPekerjaan     @relation(fields: [data_pekerjaan_id], references: [id])
+
+  berkas_pendukung  BerkasPendukung[]
+
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  deleted_at        DateTime?
+}

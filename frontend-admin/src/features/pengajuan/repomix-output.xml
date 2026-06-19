@@ -1,0 +1,1475 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+components/PengajuanDetailHeader.jsx
+components/PengajuanDetailStatusBadge.jsx
+components/PengajuanDocument.jsx
+components/PengajuanDokumen.jsx
+components/PengajuanEditModal.jsx
+components/PengajuanFilters.jsx
+components/PengajuanInfoCard.jsx
+components/PengajuanInfoRow.jsx
+components/PengajuanListCard.jsx
+components/PengajuanMobileList.jsx
+components/PengajuanNoteCard.jsx
+components/PengajuanNotFound.jsx
+components/PengajuanPageHeader.jsx
+components/PengajuanProfileHeader.jsx
+components/PengajuanStatusBadge.jsx
+components/PengajuanTable.jsx
+components/temp/PengajuanStats.jsx
+components/temp/PengajuanTabs.jsx
+constants/pengajuanConstants.js
+constants/seedPengajuan.js
+pages/PengajuanDetailPage.jsx
+pages/PengajuanPage.jsx
+store/pengajuanStore.js
+styles/pengajuan.css
+utils/pengajuanUtils.js
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="components/PengajuanDetailHeader.jsx">
+import React from 'react';
+import { ArrowLeft } from 'lucide-react';
+
+export default function PengajuanDetailHeader({ onBack }) {
+    return (
+        <div className="">
+            <button
+                type="button"
+                onClick={onBack}
+                className="flex items-center gap-1 text-gray-600 hover:text-gray-700 transition mb-2"
+            >
+                <ArrowLeft className="w-6 h-4" />
+                Kembali
+            </button>
+            <h1 className="text-3xl font-bold text-gray-800">Detail Pengajuan</h1>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanDetailStatusBadge.jsx">
+import React from 'react';
+import { getStatusStyle } from '../utils/pengajuanUtils';
+
+export default function PengajuanDetailStatusBadge({ status }) {
+    const style = getStatusStyle(status);
+
+    return (
+        <div className={`shrink-0 flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold ${style.detailBg} ${style.detailText}`}>
+            <span className={`w-3 h-3 rounded-full ${style.dot}`} />
+            {status}
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanDocument.jsx">
+import React, { useRef, useState, useEffect } from 'react';
+import { formatCurrency } from '../utils/pengajuanUtils';
+
+// Custom hook for scroll reveal animation
+const useScrollReveal = () => {
+    const ref = useRef(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsVisible(entry.isIntersecting);
+            },
+            { threshold: 0.05, rootMargin: '0px 0px -50px 0px' }
+        );
+        
+        const currentRef = ref.current;
+        if (currentRef) {
+            observer.observe(currentRef);
+        }
+        
+        return () => {
+            if (currentRef) observer.unobserve(currentRef);
+        };
+    }, []);
+
+    return { ref, isVisible };
+};
+
+const SectionCard = ({ title, children }) => {
+    const { ref, isVisible } = useScrollReveal();
+    return (
+        <div ref={ref} className={`transform transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'}`}>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5 active:translate-y-0 active:scale-[0.99] active:shadow-sm cursor-pointer group">
+                <div className="border-b border-gray-100 bg-gray-50/50 px-6 py-4 group-hover:bg-gray-100/50 transition-colors duration-300">
+                    <h3 className="font-bold text-gray-800 text-lg flex items-center gap-2">
+                        <div className="w-1.5 h-5 bg-[#FFC800] rounded-full group-hover:scale-110 transform transition-transform duration-300"></div>
+                        {title}
+                    </h3>
+                </div>
+                <div className="p-6">
+                    {children}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const HeaderDocument = ({ pengajuan }) => {
+    const { ref, isVisible } = useScrollReveal();
+    return (
+        <div ref={ref} className={`transform transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-10 scale-95'}`}>
+            <div className="bg-gradient-to-r from-[#0B1121] to-gray-900 rounded-2xl shadow-md overflow-hidden text-white mb-8 border-b-4 border-[#FFC800] transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5 active:translate-y-0 active:scale-[0.99] active:shadow-sm cursor-pointer">
+                <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                    <div>
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="bg-[#FFC800]/20 p-2 rounded-lg backdrop-blur-sm border border-[#FFC800]/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#FFC800]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Permohonan Pengajuan Kredit</h1>
+                        </div>
+                        <p className="text-gray-400 font-medium">PT BPR Bank Karanganyar (Perseroda)</p>
+                    </div>
+                    <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10 text-right">
+                        <div className="text-sm text-gray-400 mb-1">Tanggal Pengajuan</div>
+                        <div className="font-bold text-lg text-[#FFC800]">{pengajuan.date}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const DataField = ({ label, value, fullWidth = false }) => (
+    <div className={`flex flex-col ${fullWidth ? 'col-span-full' : ''}`}>
+        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">{label}</span>
+        <span className="text-sm font-medium text-gray-900 bg-gray-50 rounded-lg px-4 py-2.5 border border-gray-100 break-words min-h-[42px] flex items-center">
+            {value || '-'}
+        </span>
+    </div>
+);
+
+export default function PengajuanDocument({ pengajuan }) {
+    if (!pengajuan) return null;
+
+    const formatRupiah = (value) => {
+        if (!value) return '-';
+        return `Rp ${formatCurrency(value).replace('Rp', '').trim()}`;
+    };
+
+    return (
+        <div className="w-full mx-auto space-y-6 pb-12 font-sans overflow-x-hidden p-1">
+            
+            {/* Header Document */}
+            <HeaderDocument pengajuan={pengajuan} />
+
+            {/* DATA PRIBADI PEMOHON */}
+            <SectionCard title="Data Pribadi Pemohon">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                    <DataField label="Nama Lengkap Sesuai KTP" value={pengajuan.name} />
+                    <DataField label="Nomor Handphone" value={pengajuan.phone} />
+                    <DataField label="Tanda Pengenal (KTP) Nomor" value={pengajuan.no_ktp} />
+                    
+                    <DataField label="Tempat Tinggal" value={pengajuan.alamat} fullWidth />
+                    
+                    <DataField label="Kode Pos" value={pengajuan.kodepos} />
+                    <DataField label="Status Rumah" value={pengajuan.status_rumah} />
+                    <DataField label="Status Pernikahan" value={pengajuan.status_pernikahan} />
+                    
+                    <DataField label="Jenis Kelamin" value={pengajuan.jenis_kelamin} />
+                    <DataField label="NPWP" value={pengajuan.npwp} />
+                    <DataField label="Pekerjaan" value={pengajuan.pekerjaan || 'PPPK'} />
+                    
+                    <DataField label="Nama Gadis Ibu Kandung" value={pengajuan.nama_ibu} />
+                </div>
+            </SectionCard>
+
+            {/* DATA KHUSUS */}
+            <SectionCard title="Data Instansi / Pekerjaan">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <DataField label="Nama Instansi" value={pengajuan.instansi} />
+                    <DataField label="Jabatan dalam pekerjaan" value={pengajuan.jabatan} />
+                    <DataField label="Alamat Instansi / Kantor" value={pengajuan.alamat_instansi} fullWidth />
+                </div>
+            </SectionCard>
+
+            {/* DATA KREDIT */}
+            <SectionCard title="Data Kredit">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+                    <DataField label="Jumlah Kredit Diajukan" value={formatRupiah(pengajuan.nominal)} />
+                    <DataField label="Jangka Waktu" value={pengajuan.tenor ? `${pengajuan.tenor} Bulan` : '-'} />
+                    <DataField label="Penghasilan Tetap (Bulan)" value={formatRupiah(pengajuan.penghasilan_tetap)} />
+                    <DataField label="Penghasilan Tambahan" value={formatRupiah(pengajuan.penghasilan_tambahan)} />
+                    
+                    <DataField label="Kredit digunakan untuk" value={pengajuan.tujuan_kredit} fullWidth />
+                </div>
+            </SectionCard>
+
+            {/* DATA JAMINAN */}
+            <SectionCard title="Data Jaminan">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <DataField label="Jaminan Utama" value={pengajuan.jaminan_utama || 'SK PPPK dan Ijazah Pendidikan Terakhir'} />
+                    <DataField label="Atas Nama (Jaminan Utama)" value={pengajuan.jaminan_utama_atas_nama} />
+                    
+                    <DataField label="Jaminan Tambahan" value={pengajuan.jaminan_tambahan} />
+                    <DataField label="Atas Nama (Jaminan Tambahan)" value={pengajuan.jaminan_tambahan_atas_nama} />
+                    
+                    <DataField label="Nama Orang Terdekat / Darurat" value={pengajuan.nama_kerabat} fullWidth />
+                </div>
+            </SectionCard>
+
+            {/* IDENTITAS PASANGAN & PENJAMIN */}
+            <SectionCard title="Identitas Pasangan & Penjamin">
+                <div className="space-y-8">
+                    {/* Pasangan Debitur */}
+                    <div>
+                        <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2 flex items-center gap-2">
+                            <span className="bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-md text-xs">1</span> 
+                            Istri / Suami Debitur
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                            <DataField label="Nama Lengkap" value={pengajuan.nama_pasangan} />
+                            <DataField label="Nomor KTP" value={pengajuan.no_ktp_pasangan} />
+                            <DataField label="Alamat" value={pengajuan.alamat_pasangan} />
+                        </div>
+                    </div>
+
+                    {/* Penjamin */}
+                    <div>
+                        <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2 flex items-center gap-2">
+                            <span className="bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-md text-xs">2</span> 
+                            Penjamin
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                            <DataField label="Nama Lengkap" value={pengajuan.nama_penjamin} />
+                            <DataField label="Nomor KTP" value={pengajuan.no_ktp_penjamin} />
+                            <DataField label="Alamat" value={pengajuan.alamat_penjamin} />
+                        </div>
+                    </div>
+
+                    {/* Pasangan Penjamin */}
+                    <div>
+                        <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2 flex items-center gap-2">
+                            <span className="bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-md text-xs">3</span> 
+                            Istri / Suami Penjamin
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                            <DataField label="Nama Lengkap" value={pengajuan.nama_pasangan_penjamin} />
+                            <DataField label="Nomor KTP" value={pengajuan.no_ktp_pasangan_penjamin} />
+                            <DataField label="Alamat" value={pengajuan.alamat_pasangan_penjamin} />
+                        </div>
+                    </div>
+                </div>
+                
+                {/* Persetujuan SLIK */}
+                <div className="mt-8 bg-blue-50/50 border border-blue-100 rounded-xl p-5 text-sm text-blue-900 leading-relaxed flex gap-4 items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <span className="font-bold block mb-1">Persetujuan SLIK (Sistem Layanan Informasi Keuangan)</span>
+                        Dengan ini menyatakan bahwa debitur dan pihak terkait mengizinkan PT BPR Bank Karanganyar (Perseroda) untuk melakukan analisa SLIK atas data/identitas sehubungan dengan pengajuan kredit pada Bank tersebut. Pernyataan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.
+                    </div>
+                </div>
+            </SectionCard>
+
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanDokumen.jsx">
+import React, { useRef, useState, useEffect } from 'react';
+
+const useScrollReveal = () => {
+    const ref = useRef(null);
+    const [isVisible, setIsVisible] = useState(false);
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsVisible(entry.isIntersecting),
+            { threshold: 0.05, rootMargin: '0px 0px -50px 0px' }
+        );
+        const el = ref.current;
+        if (el) observer.observe(el);
+        return () => { if (el) observer.unobserve(el); };
+    }, []);
+    return { ref, isVisible };
+};
+
+// All icons use document style with different color accents
+const DocIcon = ({ color, lines }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" fill="none" viewBox="0 0 24 24">
+        {/* Page body */}
+        <path d="M6 2h8.586a1 1 0 01.707.293l3.414 3.414A1 1 0 0119 6.414V21a1 1 0 01-1 1H6a1 1 0 01-1-1V3a1 1 0 011-1z" fill={`${color}15`} stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        {/* Folded corner */}
+        <path d="M14 2v5h5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        {/* Content lines */}
+        {lines.map((l, i) => (
+            <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke={color} strokeWidth={l.w || 1.5} strokeLinecap="round" opacity={l.op || 1}/>
+        ))}
+    </svg>
+);
+
+const IconKTP = () => <DocIcon color="#3B82F6" lines={[
+    {x1:8,y1:10,x2:16,y2:10}, {x1:8,y1:13,x2:14,y2:13,op:0.6}, {x1:8,y1:16,x2:12,y2:16,op:0.4}
+]}/>;
+const IconKK = () => <DocIcon color="#10B981" lines={[
+    {x1:8,y1:10,x2:16,y2:10}, {x1:8,y1:13,x2:16,y2:13,op:0.6}, {x1:8,y1:16,x2:13,y2:16,op:0.4}
+]}/>;
+const IconKTPPasangan = () => <DocIcon color="#EC4899" lines={[
+    {x1:8,y1:10,x2:14,y2:10}, {x1:8,y1:13,x2:16,y2:13,op:0.6}, {x1:8,y1:16,x2:11,y2:16,op:0.4}
+]}/>;
+const IconSuratNikah = () => <DocIcon color="#F59E0B" lines={[
+    {x1:8,y1:10,x2:16,y2:10,w:2}, {x1:8,y1:13,x2:15,y2:13,op:0.6}, {x1:8,y1:16,x2:12,y2:16,op:0.4}
+]}/>;
+const IconIjazah = () => <DocIcon color="#8B5CF6" lines={[
+    {x1:8,y1:10,x2:16,y2:10}, {x1:8,y1:13,x2:16,y2:13,op:0.6}, {x1:8,y1:16,x2:16,y2:16,op:0.4}
+]}/>;
+const IconSK = () => <DocIcon color="#6366F1" lines={[
+    {x1:8,y1:10,x2:16,y2:10,w:2}, {x1:8,y1:13,x2:16,y2:13,op:0.6}, {x1:8,y1:16,x2:14,y2:16,op:0.4}
+]}/>;
+const IconNPWP = () => <DocIcon color="#F97316" lines={[
+    {x1:8,y1:10,x2:16,y2:10}, {x1:8,y1:13,x2:13,y2:13,op:0.6}, {x1:8,y1:16,x2:15,y2:16,op:0.4}
+]}/>;
+
+const DOC_LIST = [
+    { key: 'ktp',          label: 'KTP',                 Icon: IconKTP,        color: '#3B82F6' },
+    { key: 'kk',           label: 'Kartu Keluarga',      Icon: IconKK,         color: '#10B981' },
+    { key: 'ktp_pasangan', label: 'KTP Pasangan',        Icon: IconKTPPasangan,color: '#EC4899' },
+    { key: 'surat_nikah',  label: 'Surat Nikah',         Icon: IconSuratNikah, color: '#F59E0B' },
+    { key: 'ijazah',       label: 'Ijazah Terakhir',     Icon: IconIjazah,     color: '#8B5CF6' },
+    { key: 'sk',           label: 'SK',                  Icon: IconSK,         color: '#6366F1' },
+    { key: 'npwp',         label: 'NPWP',                Icon: IconNPWP,       color: '#F97316' },
+];
+
+const isImage = (file) => file && file.type.startsWith('image/');
+
+const FileCard = ({ docKey, label, Icon, color }) => {
+    const inputRef = useRef(null);
+    const [file, setFile] = useState(null);
+    const [preview, setPreview] = useState(null);
+    const [dragging, setDragging] = useState(false);
+    const [pressed, setPressed] = useState(false);
+
+    const handleFile = (selectedFile) => {
+        if (!selectedFile) return;
+        setFile(selectedFile);
+        if (isImage(selectedFile)) {
+            const reader = new FileReader();
+            reader.onload = (e) => setPreview(e.target.result);
+            reader.readAsDataURL(selectedFile);
+        } else {
+            setPreview(null);
+        }
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setDragging(false);
+        const dropped = e.dataTransfer.files[0];
+        handleFile(dropped);
+    };
+
+    const handleRemove = (e) => {
+        e.stopPropagation();
+        setFile(null);
+        setPreview(null);
+        if (inputRef.current) inputRef.current.value = '';
+    };
+
+    const formatSize = (bytes) => {
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    };
+
+    return (
+        <div 
+            className={`flex flex-col transform transition-all duration-200 ${pressed ? 'scale-[0.96]' : 'scale-100'}`}
+            onMouseDown={() => setPressed(true)}
+            onMouseUp={() => setPressed(false)}
+            onMouseLeave={() => setPressed(false)}
+            onTouchStart={() => setPressed(true)}
+            onTouchEnd={() => setPressed(false)}
+        >
+            <input
+                ref={inputRef}
+                id={`file-${docKey}`}
+                type="file"
+                className="hidden"
+                accept="image/*,.pdf"
+                onChange={(e) => handleFile(e.target.files[0])}
+            />
+
+            {/* Card Area */}
+            <div
+                onClick={() => !file && inputRef.current.click()}
+                onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+                onDragLeave={() => setDragging(false)}
+                onDrop={handleDrop}
+                className={`relative rounded-2xl border-2 overflow-hidden transition-all duration-300 group
+                    ${file
+                        ? 'border-green-300 bg-green-50/30 cursor-default shadow-md'
+                        : dragging
+                            ? 'scale-[1.02] shadow-xl cursor-copy'
+                            : 'border-dashed border-gray-200 bg-gray-50 hover:shadow-lg hover:-translate-y-1 cursor-pointer'
+                    }`}
+                style={{
+                    minHeight: '180px',
+                    borderColor: dragging ? color : undefined,
+                    backgroundColor: dragging ? `${color}10` : undefined,
+                }}
+            >
+                {/* Hover border glow effect */}
+                {!file && (
+                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                        style={{ boxShadow: `inset 0 0 0 2px ${color}` }} />
+                )}
+
+                {/* Preview / Placeholder */}
+                {preview ? (
+                    <img src={preview} alt={label} className="w-full h-44 object-cover" />
+                ) : file ? (
+                    <div className="flex flex-col items-center justify-center h-44 gap-2 p-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" fill="none" viewBox="0 0 24 24">
+                            <path d="M6 2h8.586a1 1 0 01.707.293l3.414 3.414A1 1 0 0119 6.414V21a1 1 0 01-1 1H6a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#22c55e20" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M14 2v5h5" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 13l2 2 4-4" stroke="#22c55e"/>
+                        </svg>
+                        <p className="text-sm font-semibold text-gray-700 text-center break-all">{file.name}</p>
+                        <p className="text-xs text-gray-400">{formatSize(file.size)}</p>
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center h-44 gap-3 p-4">
+                        <div className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 drop-shadow-sm">
+                            <Icon />
+                        </div>
+                        <div 
+                            className="mt-1 px-3 py-1 rounded-full bg-white border text-[10px] font-bold transition-all duration-200 group-hover:shadow-sm"
+                            style={{ borderColor: color, color: color }}
+                        >
+                            Pilih File
+                        </div>
+                    </div>
+                )}
+
+                {/* Status badge */}
+                {file && (
+                    <div className="absolute top-2 left-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Terunggah
+                    </div>
+                )}
+
+                {/* Actions on uploaded */}
+                {file && (
+                    <div className="absolute top-2 right-2 flex gap-1.5">
+                        <button
+                            onClick={() => inputRef.current.click()}
+                            className="bg-white/90 hover:bg-white text-gray-600 hover:text-[#0B1121] rounded-lg p-1.5 shadow transition-all"
+                            title="Ganti file"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={handleRemove}
+                            className="bg-white/90 hover:bg-red-50 text-gray-600 hover:text-red-500 rounded-lg p-1.5 shadow transition-all"
+                            title="Hapus file"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                )}
+            </div>
+
+            {/* Label */}
+            <div className="mt-3 flex items-center gap-1.5">
+                <span className="w-4 h-4 shrink-0 [&>svg]:w-4 [&>svg]:h-4"><Icon /></span>
+                <span className="text-xs font-bold text-gray-700 truncate">{label}</span>
+            </div>
+            {file && (
+                <p className="text-[10px] text-green-600 font-medium mt-0.5 truncate">{file.name}</p>
+            )}
+        </div>
+    );
+};
+
+export default function PengajuanDokumen() {
+    const { ref, isVisible } = useScrollReveal();
+    return (
+        <div ref={ref} className={`transform transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+            <div className="border-b border-gray-100 bg-gray-50/50 px-6 py-4">
+                <h3 className="font-bold text-gray-800 text-lg flex items-center gap-2">
+                    <div className="w-1.5 h-5 bg-[#FFC800] rounded-full"></div>
+                    Dokumen Pendukung
+                </h3>
+                <p className="text-xs text-gray-500 mt-1 ml-4">Unggah dokumen dalam format JPG, PNG, atau PDF. Klik atau seret file ke area yang tersedia.</p>
+            </div>
+            <div className="p-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-5">
+                {DOC_LIST.map((doc, i) => (
+                    <div
+                        key={doc.key}
+                        className="transform transition-all duration-500 ease-out"
+                        style={{
+                            opacity: isVisible ? 1 : 0,
+                            transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+                            transitionDelay: isVisible ? `${i * 80}ms` : '0ms',
+                        }}
+                    >
+                        <FileCard docKey={doc.key} label={doc.label} Icon={doc.Icon} color={doc.color} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanEditModal.jsx">
+import React, { useState, useEffect } from 'react';
+
+const InputField = ({ label, name, value, onChange, type = 'text', placeholder = '' }) => (
+    <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">{label}</label>
+        <input
+            type={type}
+            name={name}
+            value={value || ''}
+            onChange={onChange}
+            placeholder={placeholder || label}
+            className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] transition-all duration-200 placeholder-gray-400"
+        />
+    </div>
+);
+
+const SectionDivider = ({ title }) => (
+    <div className="col-span-full flex items-center gap-3 pt-4">
+        <div className="w-1.5 h-5 bg-[#FFC800] rounded-full shrink-0"></div>
+        <h3 className="font-bold text-gray-800 text-base">{title}</h3>
+        <div className="flex-1 h-px bg-gray-100"></div>
+    </div>
+);
+
+export default function PengajuanEditModal({ pengajuan, onSave, onClose }) {
+    const [form, setForm] = useState({});
+
+    useEffect(() => {
+        if (pengajuan) setForm({ ...pengajuan });
+    }, [pengajuan]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSave(form);
+    };
+
+    if (!pengajuan) return null;
+
+    return (
+        <div
+            className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 backdrop-blur-sm p-4 pt-8 overflow-y-auto"
+            onClick={(e) => e.target === e.currentTarget && onClose()}
+        >
+            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl animate-slide-up my-auto">
+                {/* Modal Header */}
+                <div className="bg-gradient-to-r from-[#0B1121] to-gray-900 rounded-t-3xl p-6 flex items-center justify-between border-b-4 border-[#FFC800]">
+                    <div className="flex items-center gap-3">
+                        <div className="bg-[#FFC800]/20 p-2 rounded-xl border border-[#FFC800]/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#FFC800]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 className="text-white font-bold text-lg">Edit Data Pengajuan</h2>
+                            <p className="text-gray-400 text-sm">{pengajuan.id}</p>
+                        </div>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="text-gray-400 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-xl p-2"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Modal Body */}
+                <form onSubmit={handleSubmit}>
+                    <div className="p-6 max-h-[70vh] overflow-y-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+
+                            <SectionDivider title="Data Pribadi Pemohon" />
+                            <InputField label="Nama Lengkap" name="name" value={form.name} onChange={handleChange} />
+                            <InputField label="Nomor Handphone" name="phone" value={form.phone} onChange={handleChange} />
+                            <InputField label="No. KTP" name="no_ktp" value={form.no_ktp} onChange={handleChange} />
+                            <InputField label="Tempat Tinggal" name="alamat" value={form.alamat} onChange={handleChange} />
+                            <InputField label="Kode Pos" name="kodepos" value={form.kodepos} onChange={handleChange} />
+                            <InputField label="Status Rumah" name="status_rumah" value={form.status_rumah} onChange={handleChange} />
+                            <InputField label="Status Pernikahan" name="status_pernikahan" value={form.status_pernikahan} onChange={handleChange} />
+                            <InputField label="Jenis Kelamin" name="jenis_kelamin" value={form.jenis_kelamin} onChange={handleChange} />
+                            <InputField label="NPWP" name="npwp" value={form.npwp} onChange={handleChange} />
+                            <InputField label="Pekerjaan" name="pekerjaan" value={form.pekerjaan} onChange={handleChange} />
+                            <InputField label="Nama Gadis Ibu Kandung" name="nama_ibu" value={form.nama_ibu} onChange={handleChange} />
+
+                            <SectionDivider title="Data Instansi / Pekerjaan" />
+                            <InputField label="Nama Instansi" name="instansi" value={form.instansi} onChange={handleChange} />
+                            <InputField label="Jabatan" name="jabatan" value={form.jabatan} onChange={handleChange} />
+                            <InputField label="Alamat Instansi" name="alamat_instansi" value={form.alamat_instansi} onChange={handleChange} />
+
+                            <SectionDivider title="Data Kredit" />
+                            <InputField label="Jumlah Kredit (Rp)" name="nominal" type="number" value={form.nominal} onChange={handleChange} />
+                            <InputField label="Jangka Waktu (Bulan)" name="tenor" type="number" value={form.tenor} onChange={handleChange} />
+                            <InputField label="Penghasilan Tetap (Rp)" name="penghasilan_tetap" type="number" value={form.penghasilan_tetap} onChange={handleChange} />
+                            <InputField label="Penghasilan Tambahan (Rp)" name="penghasilan_tambahan" type="number" value={form.penghasilan_tambahan} onChange={handleChange} />
+                            <InputField label="Kredit Digunakan Untuk" name="tujuan_kredit" value={form.tujuan_kredit} onChange={handleChange} />
+
+                            <SectionDivider title="Data Jaminan" />
+                            <InputField label="Jaminan Utama" name="jaminan_utama" value={form.jaminan_utama} onChange={handleChange} />
+                            <InputField label="Atas Nama (Jaminan Utama)" name="jaminan_utama_atas_nama" value={form.jaminan_utama_atas_nama} onChange={handleChange} />
+                            <InputField label="Jaminan Tambahan" name="jaminan_tambahan" value={form.jaminan_tambahan} onChange={handleChange} />
+                            <InputField label="Atas Nama (Jaminan Tambahan)" name="jaminan_tambahan_atas_nama" value={form.jaminan_tambahan_atas_nama} onChange={handleChange} />
+                            <InputField label="Nama Orang Terdekat" name="nama_kerabat" value={form.nama_kerabat} onChange={handleChange} />
+
+                            <SectionDivider title="Identitas Pasangan Debitur" />
+                            <InputField label="Nama Pasangan" name="nama_pasangan" value={form.nama_pasangan} onChange={handleChange} />
+                            <InputField label="No. KTP Pasangan" name="no_ktp_pasangan" value={form.no_ktp_pasangan} onChange={handleChange} />
+                            <InputField label="Alamat Pasangan" name="alamat_pasangan" value={form.alamat_pasangan} onChange={handleChange} />
+
+                            <SectionDivider title="Penjamin" />
+                            <InputField label="Nama Penjamin" name="nama_penjamin" value={form.nama_penjamin} onChange={handleChange} />
+                            <InputField label="No. KTP Penjamin" name="no_ktp_penjamin" value={form.no_ktp_penjamin} onChange={handleChange} />
+                            <InputField label="Alamat Penjamin" name="alamat_penjamin" value={form.alamat_penjamin} onChange={handleChange} />
+
+                            <SectionDivider title="Pasangan Penjamin" />
+                            <InputField label="Nama Pasangan Penjamin" name="nama_pasangan_penjamin" value={form.nama_pasangan_penjamin} onChange={handleChange} />
+                            <InputField label="No. KTP Pasangan Penjamin" name="no_ktp_pasangan_penjamin" value={form.no_ktp_pasangan_penjamin} onChange={handleChange} />
+                            <InputField label="Alamat Pasangan Penjamin" name="alamat_pasangan_penjamin" value={form.alamat_pasangan_penjamin} onChange={handleChange} />
+                        </div>
+                    </div>
+
+                    {/* Modal Footer */}
+                    <div className="p-6 border-t border-gray-100 flex justify-end gap-3">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-6 py-2.5 rounded-xl text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all duration-200 active:scale-95"
+                        >
+                            Batal
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-6 py-2.5 rounded-xl text-sm font-bold text-[#0B1121] bg-[#FFC800] hover:bg-yellow-400 shadow-lg shadow-[#FFC800]/30 transition-all duration-200 active:scale-95 flex items-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanFilters.jsx">
+import React from 'react';
+import { Search } from 'lucide-react';
+
+export default function PengajuanFilters({ search, onSearchChange, onReset }) {
+    return (
+        <div className="p-6 md:p-8 border-b flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+                <input
+                    type="text"
+                    placeholder="Cari nama kreditur, instansi, atau no. pengajuan..."
+                    className="w-full pl-14 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:border-blue-500 text-sm"
+                    value={search}
+                    onChange={(event) => onSearchChange(event.target.value)}
+                />
+                <Search className="w-5 h-5 text-gray-400 absolute left-5 top-1/2 -translate-y-1/2" />
+            </div>
+            <button
+                type="button"
+                onClick={onReset}
+                className="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 transition"
+            >
+                Reset Filter
+            </button>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanInfoCard.jsx">
+import React from 'react';
+import PengajuanInfoRow from './PengajuanInfoRow';
+
+export default function PengajuanInfoCard({ title, rows }) {
+    return (
+        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+            <p className="text-xs font-black text-[#152042] uppercase tracking-widest mb-6">{title}</p>
+            <div className="space-y-5">
+                {rows.filter((row) => row.value !== undefined && row.value !== null && row.value !== '').map((row) => (
+                    <PengajuanInfoRow key={row.label} label={row.label} value={row.value} />
+                ))}
+            </div>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanInfoRow.jsx">
+import React from 'react';
+
+export default function PengajuanInfoRow({ label, value }) {
+    return (
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 py-1 border-b border-gray-100 last:border-0">
+            <span className="text-xs text-gray-500 w-40 shrink-0 font-medium">{label}</span>
+            <span className="text-sm font-semibold text-[#152042] flex-1">{value || '-'}</span>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanListCard.jsx">
+import React from "react";
+import PengajuanFilters from "./PengajuanFilters";
+import PengajuanMobileList from "./PengajuanMobileList";
+import PengajuanTable from "./PengajuanTable";
+import PengajuanTabs from "./temp/PengajuanTabs";
+
+export default function PengajuanListCard({
+  activeTab,
+  counts,
+  items,
+  search,
+  onDetail,
+  onReset,
+  onSearchChange,
+  onTabChange,
+}) {
+  return (
+    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden animate-scale-in">
+      {/* <PengajuanTabs activeTab={activeTab} counts={counts} onChange={onTabChange} /> */}
+      <PengajuanFilters
+        search={search}
+        onSearchChange={onSearchChange}
+        onReset={onReset}
+      />
+      <div className="overflow-hidden">
+        <PengajuanTable items={items} onDetail={onDetail} />
+        <PengajuanMobileList items={items} onDetail={onDetail} />
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="components/PengajuanMobileList.jsx">
+import React from 'react';
+import { getAvatarUrl } from '../utils/pengajuanUtils';
+import PengajuanStatusBadge from './PengajuanStatusBadge';
+
+export default function PengajuanMobileList({ items, onDetail }) {
+    return (
+        <div className="md:hidden p-4 space-y-4">
+            {items.map((row, index) => (
+                <div
+                    key={row.id}
+                    className="border border-gray-100 rounded-3xl p-6 bg-white animate-fade-up"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                >
+                    <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-4">
+                            <img src={getAvatarUrl(row.name)} className="w-14 h-14 rounded-2xl" alt="" />
+                            <div>
+                                <p className="font-semibold text-lg">{row.name}</p>
+                                <p className="text-gray-500 text-sm">{row.instansi}</p>
+                            </div>
+                        </div>
+                        <PengajuanStatusBadge status={row.status} size="sm" />
+                    </div>
+                    <div className="mt-6 grid grid-cols-2 gap-y-4 text-sm">
+                        <div>
+                            <span className="text-gray-500">No. Pengajuan</span>
+                            <br />
+                            {row.id}
+                        </div>
+                        <div>
+                            <span className="text-gray-500">Tanggal</span>
+                            <br />
+                            {row.date}
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => onDetail(row.id)}
+                        className="mt-6 w-full py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition"
+                    >
+                        Lihat Detail
+                    </button>
+                </div>
+            ))}
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanNoteCard.jsx">
+import React from 'react';
+
+export default function PengajuanNoteCard({ catatan }) {
+    if (!catatan) return null;
+
+    return (
+        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+            <p className="text-xs font-black text-[#152042] uppercase tracking-widest mb-4">Catatan / Keterangan</p>
+            <p className="text-gray-700 leading-relaxed">{catatan}</p>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanNotFound.jsx">
+import React from 'react';
+import { ArrowLeft } from 'lucide-react';
+
+export default function PengajuanNotFound({ onBack }) {
+    return (
+        <div className="min-h-[70vh] flex items-center justify-center text-center px-4">
+            <div>
+                <h2 className="text-3xl font-bold text-gray-800">Pengajuan Tidak Ditemukan</h2>
+                <button
+                    type="button"
+                    onClick={onBack}
+                    className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition"
+                >
+                    <ArrowLeft className="w-4 h-4" />
+                    Kembali ke Daftar Pengajuan
+                </button>
+            </div>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanPageHeader.jsx">
+import React from 'react';
+
+export default function PengajuanPageHeader() {
+    return (
+        <div className="animate-fade-up">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent tracking-tighter">
+                Daftar Pengajuan
+            </h1>
+            <p className="text-gray-500 mt-1 text-lg">Kelola semua pengajuan kredit dari kreditur</p>
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanProfileHeader.jsx">
+import React from 'react';
+import { getInitials } from '../utils/pengajuanUtils';
+import PengajuanDetailStatusBadge from './PengajuanDetailStatusBadge';
+
+export default function PengajuanProfileHeader({ pengajuan }) {
+    return (
+        <div className="flex flex-col md:flex-row md:items-center gap-6 p-8 bg-gradient-to-br from-[#152042] to-[#0B1171] rounded-3xl text-white shadow-xl">
+            <div className="w-24 h-24 rounded-3xl bg-[#FFC800] flex items-center justify-center font-black text-[#152042] text-4xl shadow-inner shrink-0">
+                {getInitials(pengajuan.name)}
+            </div>
+
+            <div className="flex-1 min-w-0">
+                <h2 className="text-2xl font-bold tracking-tight">{pengajuan.name}</h2>
+                <p className="text-blue-200 mt-1">{pengajuan.instansi}</p>
+                <p className="text-blue-300 font-mono text-sm mt-1">{pengajuan.id}</p>
+            </div>
+
+            <PengajuanDetailStatusBadge status={pengajuan.status} />
+        </div>
+    );
+}
+</file>
+
+<file path="components/PengajuanStatusBadge.jsx">
+import React from 'react';
+import { getStatusStyle } from '../utils/pengajuanUtils';
+
+export default function PengajuanStatusBadge({ status, size = 'md' }) {
+    const style = getStatusStyle(status);
+    const spacing = size === 'sm' ? 'px-4 py-1 text-xs' : 'px-5 py-2 text-sm';
+
+    return (
+        <span className={`${spacing} font-semibold rounded-2xl border ${style.badge}`}>
+            {status}
+        </span>
+    );
+}
+</file>
+
+<file path="components/PengajuanTable.jsx">
+// src/features/pengajuan/components/PengajuanTable.jsx
+import React from 'react';
+
+export default function PengajuanTable({ items = [], onDetail }) {
+    return (
+        <div className="overflow-x-auto">
+            <table className="w-full min-w-[1000px] bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+                <thead>
+                    <tr className="bg-gray-50 border-b">
+                        <th className="w-12 px-6 py-5 text-left text-xs font-semibold text-gray-500">NO</th>
+                        <th className="px-6 py-5 text-left text-xs font-semibold text-gray-500">KREDITUR</th>
+                        <th className="px-6 py-5 text-left text-xs font-semibold text-gray-500">INSTANSI</th>
+                        <th className="px-6 py-5 text-left text-xs font-semibold text-gray-500">TANGGAL</th>
+                        <th className="w-32 px-6 py-5 text-center text-xs font-semibold text-gray-500">AKSI</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                    {items.map((item, index) => (
+                        <tr
+                            key={item.id || index}
+                            className="hover:bg-gray-50 transition-colors"
+                        >
+                            {/* No */}
+                            <td className="px-6 py-5 text-center font-medium text-gray-500">
+                                {index + 1}
+                            </td>
+
+                            {/* Kreditur */}
+                            <td className="px-6 py-5 font-medium text-gray-800">
+                                {item.name || item.kreditur}
+                            </td>
+
+                            {/* Instansi */}
+                            <td className="px-6 py-5 text-gray-600">
+                                {item.instansi}
+                            </td>
+
+                            {/* Tanggal */}
+                            <td className="px-6 py-5 text-gray-600 font-medium">
+                                {item.tanggal || item.date}
+                            </td>
+
+                            {/* Aksi */}
+                            <td className="px-6 py-5 text-center">
+                                <button
+                                    onClick={() => onDetail(item.id)}
+                                    className="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all active:scale-95"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5 16.477 5 20.268 7.943 21.542 12 20.268 16.057 16.477 19 12 19 7.523 19 3.732 16.057 2.458 12z" />
+                                    </svg>
+                                    Detail
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+}
+</file>
+
+<file path="components/temp/PengajuanStats.jsx">
+import React from "react";
+import { STAT_STYLES } from "../../constants/pengajuanConstants";
+
+export default function PengajuanStats({ stats }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+      {stats.map((stat, index) => (
+        <div
+          key={stat.label}
+          className="bg-white rounded-3xl p-7 shadow-sm border border-gray-100 hover:shadow-xl transition-all animate-fade-up"
+          style={{ animationDelay: `${index * 100}ms` }}
+        >
+          <div
+            className={`text-xs font-bold uppercase tracking-widest ${STAT_STYLES[stat.color] || "text-gray-600"} mb-3`}
+          >
+            {stat.label}
+          </div>
+          <p className="text-5xl font-bold text-gray-800 tracking-tighter">
+            {stat.value}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+</file>
+
+<file path="components/temp/PengajuanTabs.jsx">
+import React from "react";
+import { PENGAJUAN_TABS } from "../../constants/pengajuanConstants";
+
+export default function PengajuanTabs({ activeTab, counts, onChange }) {
+  return (
+    <div className="flex border-b border-gray-100 overflow-x-auto bg-gray-50/50">
+      {PENGAJUAN_TABS.map((tab) => (
+        <button
+          key={tab}
+          type="button"
+          onClick={() => onChange(tab)}
+          className={`px-8 py-6 text-sm font-semibold whitespace-nowrap border-b-2 transition-all ${
+            activeTab === tab
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          {tab}
+          <span className="ml-2 text-xs px-2.5 py-0.5 rounded-full bg-gray-100">
+            {counts[tab] || 0}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
+</file>
+
+<file path="constants/pengajuanConstants.js">
+export const PENGAJUAN_STATUSES = [
+    'Menunggu Review',
+    'Sedang Diproses',
+    'Disetujui',
+    'Ditolak',
+];
+
+export const PENGAJUAN_TABS = ['Semua', ...PENGAJUAN_STATUSES];
+
+export const STATUS_STYLES = {
+    Disetujui: {
+        badge: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+        detailBg: 'bg-emerald-100',
+        detailText: 'text-emerald-700',
+        dot: 'bg-emerald-500',
+    },
+    'Sedang Diproses': {
+        badge: 'bg-blue-100 text-blue-700 border-blue-200',
+        detailBg: 'bg-blue-100',
+        detailText: 'text-blue-700',
+        dot: 'bg-blue-500',
+    },
+    Ditolak: {
+        badge: 'bg-rose-100 text-rose-700 border-rose-200',
+        detailBg: 'bg-rose-100',
+        detailText: 'text-rose-700',
+        dot: 'bg-rose-500',
+    },
+    'Menunggu Review': {
+        badge: 'bg-amber-100 text-amber-700 border-amber-200',
+        detailBg: 'bg-amber-100',
+        detailText: 'text-amber-700',
+        dot: 'bg-amber-500',
+    },
+};
+
+export const DEFAULT_STATUS_STYLE = {
+    badge: 'bg-gray-100 text-gray-600 border-gray-200',
+    detailBg: 'bg-gray-100',
+    detailText: 'text-gray-600',
+    dot: 'bg-gray-400',
+};
+
+export const STAT_STYLES = {
+    indigo: 'text-indigo-600',
+    amber: 'text-amber-600',
+    blue: 'text-blue-600',
+    emerald: 'text-emerald-600',
+    rose: 'text-rose-600',
+};
+</file>
+
+<file path="constants/seedPengajuan.js">
+export const SEED_PENGAJUAN = [
+    { id: 'PGJ-250527-00128', name: 'Budi Santoso', phone: '0812-3456-7890', instansi: 'Pemerintah Prov. DKI Jakarta', nominal: 350000000, date: '2025-05-27', time: '10:30 WIB', status: 'Menunggu Review' },
+    { id: 'PGJ-250526-00127', name: 'Siti Aisyah', phone: '0813-2345-6789', instansi: 'Kementerian Keuangan', nominal: 250000000, date: '2025-05-26', time: '14:20 WIB', status: 'Sedang Diproses' },
+    { id: 'PGJ-250526-00126', name: 'Andi Pratama', phone: '0812-1111-2222', instansi: 'Pemerintah Kota Bandung', nominal: 150000000, date: '2025-05-26', time: '09:15 WIB', status: 'Disetujui' },
+    { id: 'PGJ-250525-00125', name: 'Dewi Lestari', phone: '0813-3333-4444', instansi: 'Pemerintah Prov. Jawa Timur', nominal: 500000000, date: '2025-05-25', time: '11:05 WIB', status: 'Ditolak' },
+    { id: 'PGJ-250525-00124', name: 'Rizky Prabowo', phone: '0812-5555-6666', instansi: 'Kementerian Pendidikan', nominal: 200000000, date: '2025-05-25', time: '08:50 WIB', status: 'Sedang Diproses' },
+    { id: 'PGJ-250524-00123', name: 'Nadia Putri', phone: '0813-7777-8888', instansi: 'Badan Pusat Statistik', nominal: 180000000, date: '2025-05-24', time: '16:40 WIB', status: 'Menunggu Review' },
+];
+</file>
+
+<file path="pages/PengajuanDetailPage.jsx">
+// src/features/pengajuan/pages/PengajuanDetailPage.jsx
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+import PengajuanDetailHeader from '../components/PengajuanDetailHeader';
+import PengajuanDocument from '../components/PengajuanDocument';
+import PengajuanEditModal from '../components/PengajuanEditModal';
+import PengajuanDokumen from '../components/PengajuanDokumen';
+import PengajuanNotFound from '../components/PengajuanNotFound';
+import { usePengajuanStore } from '../store/pengajuanStore';
+
+export default function PengajuanDetailPage() {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { pengajuan, updatePengajuan } = usePengajuanStore();
+    
+    const [showEdit, setShowEdit] = useState(false);
+    const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+    const current = pengajuan.find((item) => item.id === id);
+    const handleBack = () => navigate('/admin/pengajuan');
+
+    const handleSave = (data) => {
+        updatePengajuan(id, data);
+        setShowEdit(false);
+    };
+
+    // ================== FUNGSI UNDUH PDF ==================
+    const handleDownloadPDF = async () => {
+        if (!current) {
+            alert('Data pengajuan tidak ditemukan');
+            return;
+        }
+
+        setIsGeneratingPDF(true);
+
+        try {
+            // Delay untuk memastikan semua animasi selesai
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const element = document.getElementById('pengajuan-document-content');
+            
+            if (!element) {
+                throw new Error('Elemen tidak ditemukan');
+            }
+
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                logging: false,
+                backgroundColor: '#ffffff',
+                scrollY: -window.scrollY, // penting untuk capture full content
+            });
+
+            const imgData = canvas.toDataURL('image/png', 1.0);
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth - 20, pdfHeight - 20);
+            
+            pdf.save(`Pengajuan_${(current.name || current.nama || 'Kreditur').replace(/\s+/g, '_')}_${current.id || id}.pdf`);
+
+            alert('PDF berhasil dibuat!');
+        } catch (error) {
+            console.error('PDF Error:', error);
+            alert('Gagal membuat PDF. Coba refresh halaman terlebih dahulu.');
+        } finally {
+            setIsGeneratingPDF(false);
+        }
+    };
+
+    if (!current) {
+        return <PengajuanNotFound onBack={handleBack} />;
+    }
+
+    return (
+        <div className="w-full mx-auto space-y-8 pb-12">
+            {/* Header + Tombol Aksi */}
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex-1">
+                    <PengajuanDetailHeader onBack={handleBack} />
+                </div>
+
+                <div className="flex items-center gap-3">
+                    {/* Tombol Unduh PDF */}
+                    <button
+                        onClick={handleDownloadPDF}
+                        disabled={isGeneratingPDF}
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/30 transition-all duration-200 active:scale-95 disabled:opacity-70"
+                    >
+                        {isGeneratingPDF ? (
+                            'Membuat PDF...'
+                        ) : (
+                            <>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H3a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
+                                </svg>
+                                Unduh PDF
+                            </>
+                        )}
+                    </button>
+
+                    {/* Tombol Edit (original) */}
+                    <button
+                        onClick={() => setShowEdit(true)}
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-[#0B1121] bg-[#FFC800] hover:bg-yellow-400 shadow-lg shadow-[#FFC800]/30 transition-all duration-200 active:scale-95 shrink-0"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit Data
+                    </button>
+                </div>
+            </div>
+
+            {/* Konten yang akan di-capture PDF */}
+            <div id="pengajuan-document-content">
+                <PengajuanDocument pengajuan={current} />
+            </div>
+
+            {/* Dokumen Pendukung */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <PengajuanDokumen />
+            </div>
+
+            {/* Edit Modal */}
+            {showEdit && (
+                <PengajuanEditModal
+                    pengajuan={current}
+                    onSave={handleSave}
+                    onClose={() => setShowEdit(false)}
+                />
+            )}
+        </div>
+    );
+}
+</file>
+
+<file path="pages/PengajuanPage.jsx">
+import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PengajuanListCard from "../components/PengajuanListCard";
+import PengajuanPageHeader from "../components/PengajuanPageHeader";
+import PengajuanStats from "../components/temp/PengajuanStats";
+import { usePengajuanStore } from "../store/pengajuanStore";
+import {
+  buildPengajuanStats,
+  buildTabCounts,
+  filterPengajuan,
+} from "../utils/pengajuanUtils";
+import { useUIStore } from "../../../store/uiStore";
+import "../styles/pengajuan.css";
+
+export default function PengajuanPage() {
+  const navigate = useNavigate();
+  const { pengajuan } = usePengajuanStore();
+  const { globalSearch } = useUIStore();
+
+  const [activeTab, setActiveTab] = useState("Semua");
+  const [localSearch, setLocalSearch] = useState("");
+
+  const effectiveSearch = localSearch || globalSearch;
+  const stats = useMemo(() => buildPengajuanStats(pengajuan), [pengajuan]);
+  const tabCounts = useMemo(() => buildTabCounts(pengajuan), [pengajuan]);
+  const filteredPengajuan = useMemo(
+    () => filterPengajuan(pengajuan, effectiveSearch, activeTab),
+    [activeTab, effectiveSearch, pengajuan],
+  );
+
+  const handleReset = () => {
+    setLocalSearch("");
+    setActiveTab("Semua");
+  };
+
+  const handleDetail = (id) => {
+    navigate(`/admin/pengajuan/detail/${id}`);
+  };
+
+  return (
+    <div className="space-y-8">
+      <PengajuanPageHeader />
+      {/* <PengajuanStats stats={stats} /> */}
+      <PengajuanListCard
+        activeTab={activeTab}
+        counts={tabCounts}
+        items={filteredPengajuan}
+        search={localSearch}
+        onDetail={handleDetail}
+        onReset={handleReset}
+        onSearchChange={setLocalSearch}
+        onTabChange={setActiveTab}
+      />
+    </div>
+  );
+}
+</file>
+
+<file path="store/pengajuanStore.js">
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { SEED_PENGAJUAN } from '../constants/seedPengajuan';
+
+export const usePengajuanStore = create(
+    persist(
+        (set) => ({
+            pengajuan: SEED_PENGAJUAN,
+            updateStatus: (id, status) => set(state => ({
+                pengajuan: state.pengajuan.map(p => p.id === id ? { ...p, status } : p)
+            })),
+            deletePengajuan: (id) => set(state => ({
+                pengajuan: state.pengajuan.filter(p => p.id !== id)
+            })),
+        }),
+        { name: 'sikredit-pengajuan-final' }
+    )
+);
+</file>
+
+<file path="styles/pengajuan.css">
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease forwards;
+}
+</file>
+
+<file path="utils/pengajuanUtils.js">
+import {
+    DEFAULT_STATUS_STYLE,
+    PENGAJUAN_STATUSES,
+    STATUS_STYLES,
+} from '../constants/pengajuanConstants';
+
+export function getStatusStyle(status) {
+    return STATUS_STYLES[status] || DEFAULT_STATUS_STYLE;
+}
+
+export function filterPengajuan(pengajuan, searchText, activeTab) {
+    const search = searchText.trim().toLowerCase();
+
+    return pengajuan.filter((item) => {
+        const matchSearch = !search
+            || item.name?.toLowerCase().includes(search)
+            || item.instansi?.toLowerCase().includes(search)
+            || item.id?.toLowerCase().includes(search);
+        const matchTab = activeTab === 'Semua' || item.status === activeTab;
+
+        return matchSearch && matchTab;
+    });
+}
+
+export function buildPengajuanStats(pengajuan) {
+    return [
+        { label: 'Total Pengajuan', value: pengajuan.length, color: 'indigo' },
+        ...PENGAJUAN_STATUSES.map((status) => ({
+            label: status,
+            value: pengajuan.filter((item) => item.status === status).length,
+            color: {
+                'Menunggu Review': 'amber',
+                'Sedang Diproses': 'blue',
+                Disetujui: 'emerald',
+                Ditolak: 'rose',
+            }[status],
+        })),
+    ];
+}
+
+export function buildTabCounts(pengajuan) {
+    return pengajuan.reduce(
+        (counts, item) => ({
+            ...counts,
+            Semua: counts.Semua + 1,
+            [item.status]: (counts[item.status] || 0) + 1,
+        }),
+        { Semua: 0 }
+    );
+}
+
+export function formatCurrency(value) {
+    if (!value) return '-';
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+}
+
+export function getInitials(name) {
+    return name?.split(' ').slice(0, 2).map((word) => word[0]).join('').toUpperCase() || '?';
+}
+
+export function getAvatarUrl(name) {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || '?')}&background=2563eb&color=fff`;
+}
+</file>
+
+</files>

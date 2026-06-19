@@ -1,0 +1,792 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+components/category/CategoryMasterForm.jsx
+components/category/GolonganForm.jsx
+components/category/InstansiForm.jsx
+components/category/JabatanForm.jsx
+components/category/JenisKelaminForm.jsx
+components/category/PendidikanForm.jsx
+components/category/StatusPernikahanForm.jsx
+components/category/SumberDanaForm.jsx
+components/category/UnitKerjaForm.jsx
+components/MasterDataForm.jsx
+components/MasterDataInstansi.jsx
+components/MasterDataTable.jsx
+pages/MasterDataPage.jsx
+store/masterDataStore.js
+styles/masterData.css
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="components/category/CategoryMasterForm.jsx">
+import React, { useEffect, useState } from 'react';
+
+const emptyForm = { label: '', kode: '', aktif: true };
+
+export default function CategoryMasterForm({
+    initialData = null,
+    onSubmit,
+    onCancel,
+    nameLabel,
+    submitLabel,
+}) {
+    const [form, setForm] = useState(emptyForm);
+
+    useEffect(() => {
+        setForm(initialData ? { ...emptyForm, ...initialData } : emptyForm);
+    }, [initialData]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit({
+            ...form,
+            label: form.label.trim(),
+            kode: form.kode.trim().toUpperCase(),
+        });
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {nameLabel} <span className="text-red-500">*</span>
+                </label>
+                <input
+                    type="text"
+                    value={form.label}
+                    onChange={(e) => setForm({ ...form, label: e.target.value })}
+                    className="w-full px-4 py-3 border rounded-2xl focus:ring-2 focus:ring-blue-500"
+                    required
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Kode <span className="text-red-500">*</span>
+                </label>
+                <input
+                    type="text"
+                    value={form.kode}
+                    onChange={(e) => setForm({ ...form, kode: e.target.value.toUpperCase() })}
+                    className="w-full px-4 py-3 border rounded-2xl font-mono focus:ring-2 focus:ring-blue-500"
+                    required
+                />
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                <div>
+                    <p className="font-medium">Status Aktif</p>
+                    <p className="text-sm text-gray-500">Item aktif akan muncul di dropdown</p>
+                </div>
+                <button
+                    type="button"
+                    onClick={() => setForm((current) => ({ ...current, aktif: !current.aktif }))}
+                    className={`w-12 h-6 rounded-full relative transition-all ${form.aktif ? 'bg-blue-600' : 'bg-gray-300'}`}
+                >
+                    <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all ${form.aktif ? 'translate-x-6' : 'translate-x-0.5'}`} />
+                </button>
+            </div>
+            <div className="flex justify-end gap-3 pt-4">
+                <button type="button" onClick={onCancel} className="px-6 py-3 border rounded-2xl">
+                    Batal
+                </button>
+                <button type="submit" className="px-6 py-3 bg-blue-600 text-white rounded-2xl hover:bg-blue-700">
+                    {initialData ? 'Simpan Perubahan' : `Tambah ${submitLabel}`}
+                </button>
+            </div>
+        </form>
+    );
+}
+</file>
+
+<file path="components/category/GolonganForm.jsx">
+import React from 'react';
+import CategoryMasterForm from './CategoryMasterForm';
+
+export default function GolonganForm(props) {
+    return <CategoryMasterForm {...props} nameLabel="Nama Golongan" submitLabel="Golongan" />;
+}
+</file>
+
+<file path="components/category/InstansiForm.jsx">
+import React from 'react';
+import CategoryMasterForm from './CategoryMasterForm';
+
+export default function InstansiForm(props) {
+    return <CategoryMasterForm {...props} nameLabel="Nama Instansi" submitLabel="Instansi" />;
+}
+</file>
+
+<file path="components/category/JabatanForm.jsx">
+import React from 'react';
+import CategoryMasterForm from './CategoryMasterForm';
+
+export default function JabatanForm(props) {
+    return <CategoryMasterForm {...props} nameLabel="Nama Jabatan" submitLabel="Jabatan" />;
+}
+</file>
+
+<file path="components/category/JenisKelaminForm.jsx">
+import React from 'react';
+import CategoryMasterForm from './CategoryMasterForm';
+
+export default function JenisKelaminForm(props) {
+    return <CategoryMasterForm {...props} nameLabel="Nama Jenis Kelamin" submitLabel="Jenis Kelamin" />;
+}
+</file>
+
+<file path="components/category/PendidikanForm.jsx">
+import React from 'react';
+import CategoryMasterForm from './CategoryMasterForm';
+
+export default function PendidikanForm(props) {
+    return <CategoryMasterForm {...props} nameLabel="Nama Pendidikan" submitLabel="Pendidikan" />;
+}
+</file>
+
+<file path="components/category/StatusPernikahanForm.jsx">
+import React from 'react';
+import CategoryMasterForm from './CategoryMasterForm';
+
+export default function StatusPernikahanForm(props) {
+    return <CategoryMasterForm {...props} nameLabel="Nama Status Pernikahan" submitLabel="Status Pernikahan" />;
+}
+</file>
+
+<file path="components/category/SumberDanaForm.jsx">
+import React from 'react';
+import CategoryMasterForm from './CategoryMasterForm';
+
+export default function SumberDanaForm(props) {
+    return <CategoryMasterForm {...props} nameLabel="Nama Sumber Dana" submitLabel="Sumber Dana" />;
+}
+</file>
+
+<file path="components/category/UnitKerjaForm.jsx">
+import React from 'react';
+import CategoryMasterForm from './CategoryMasterForm';
+
+export default function UnitKerjaForm(props) {
+    return <CategoryMasterForm {...props} nameLabel="Nama Unit Kerja" submitLabel="Unit Kerja" />;
+}
+</file>
+
+<file path="components/MasterDataForm.jsx">
+import React, { useState, useEffect } from 'react';
+
+/**
+ * Form Tambah/Edit item Master Data
+ * Props:
+ *  - initialData: object | null (null = mode tambah)
+ *  - onSubmit: (formValues) => void
+ *  - onCancel: () => void
+ */
+export default function MasterDataForm({ initialData = null, onSubmit, onCancel }) {
+    const [label, setLabel] = useState('');
+    const [kode, setKode] = useState('');
+    const [aktif, setAktif] = useState(true);
+    const [errors, setErrors] = useState({});
+
+    // Isi form jika mode edit
+    useEffect(() => {
+        if (initialData) {
+            setLabel(initialData.label ?? '');
+            setKode(initialData.kode ?? '');
+            setAktif(initialData.aktif ?? true);
+        } else {
+            setLabel('');
+            setKode('');
+            setAktif(true);
+        }
+        setErrors({});
+    }, [initialData]);
+
+    // Auto-generate kode dari label
+    const handleLabelChange = (e) => {
+        const val = e.target.value;
+        setLabel(val);
+        if (!initialData) {
+            setKode(val.toUpperCase().replace(/\s+/g, '_').replace(/[^A-Z0-9_]/g, '').slice(0, 20));
+        }
+    };
+
+    const validate = () => {
+        const errs = {};
+        if (!label.trim()) errs.label = 'Label wajib diisi.';
+        if (!kode.trim()) errs.kode = 'Kode wajib diisi.';
+        else if (!/^[A-Z0-9_]+$/.test(kode)) errs.kode = 'Kode hanya boleh huruf kapital, angka, dan underscore.';
+        return errs;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const errs = validate();
+        if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+        onSubmit({ label: label.trim(), kode: kode.trim().toUpperCase(), aktif });
+    };
+
+    const inputClass = (field) =>
+        `w-full px-3 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all ${
+            errors[field]
+                ? 'border-red-400 focus:ring-red-200 bg-red-50'
+                : 'border-gray-200 focus:ring-[#152042]/20 focus:border-[#152042] bg-white'
+        }`;
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Label */}
+            <div>
+                <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">
+                    Label / Nama Tampil <span className="text-red-500">*</span>
+                </label>
+                <input
+                    type="text"
+                    value={label}
+                    onChange={handleLabelChange}
+                    placeholder="Contoh: Dinas Pendidikan"
+                    className={inputClass('label')}
+                />
+                {errors.label && <p className="mt-1 text-xs text-red-500">{errors.label}</p>}
+            </div>
+
+            {/* Kode */}
+            <div>
+                <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">
+                    Kode <span className="text-red-500">*</span>
+                </label>
+                <input
+                    type="text"
+                    value={kode}
+                    onChange={(e) => setKode(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))}
+                    placeholder="Contoh: DIKNAS"
+                    className={`${inputClass('kode')} font-mono`}
+                    maxLength={20}
+                />
+                {errors.kode
+                    ? <p className="mt-1 text-xs text-red-500">{errors.kode}</p>
+                    : <p className="mt-1 text-xs text-gray-400">Otomatis dari label. Hanya huruf kapital, angka, underscore.</p>
+                }
+            </div>
+
+            {/* Status Aktif */}
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <div>
+                    <p className="text-sm font-bold text-gray-700">Status Aktif</p>
+                    <p className="text-xs text-gray-400">Item yang nonaktif tidak tampil di dropdown form.</p>
+                </div>
+                <button
+                    type="button"
+                    onClick={() => setAktif(v => !v)}
+                    className={`relative w-11 h-6 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                        aktif
+                            ? 'bg-[#152042] focus:ring-[#152042]/40'
+                            : 'bg-gray-300 focus:ring-gray-400/40'
+                    }`}
+                >
+                    <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-300 ${aktif ? 'translate-x-5' : ''}`} />
+                </button>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 pt-2">
+                <button
+                    type="button"
+                    onClick={onCancel}
+                    className="px-5 py-2 text-sm font-bold border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-100 transition-all"
+                >
+                    Batal
+                </button>
+                <button
+                    type="submit"
+                    className="px-5 py-2 text-sm font-bold rounded-lg bg-[#152042] hover:bg-[#0B1171] text-white transition-all shadow-sm shadow-[#152042]/20 flex items-center gap-2"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                    {initialData ? 'Simpan Perubahan' : 'Tambah Data'}
+                </button>
+            </div>
+        </form>
+    );
+}
+</file>
+
+<file path="components/MasterDataInstansi.jsx">
+
+</file>
+
+<file path="components/MasterDataTable.jsx">
+import React, { useState } from 'react';
+import { useMasterDataStore } from '../store/masterDataStore';
+import DataTable from '../../../components/ui/DataTable';
+import Modal from '../../../components/ui/Modal';
+import ConfirmDialog from '../../../components/ui/ConfirmDialog';
+import MasterDataForm from './MasterDataForm';
+import InstansiForm from './category/InstansiForm';
+import JabatanForm from './category/JabatanForm';
+import UnitKerjaForm from './category/UnitKerjaForm';
+import GolonganForm from './category/GolonganForm';
+import SumberDanaForm from './category/SumberDanaForm';
+import PendidikanForm from './category/PendidikanForm';
+import StatusPernikahanForm from './category/StatusPernikahanForm';
+import JenisKelaminForm from './category/JenisKelaminForm';
+
+const CATEGORY_FORMS = {
+    instansi: InstansiForm,
+    jabatan: JabatanForm,
+    'unit-kerja': UnitKerjaForm,
+    golongan: GolonganForm,
+    'sumber-dana': SumberDanaForm,
+    pendidikan: PendidikanForm,
+    'status-pernikahan': StatusPernikahanForm,
+    'jenis-kelamin': JenisKelaminForm,
+};
+
+export default function MasterDataTable({ categoryKey }) {
+    const { categories, data, addItem, updateItem, deleteItem, toggleAktif } = useMasterDataStore();
+    const items = data[categoryKey] ?? [];
+    const activeCategory = categories.find((category) => category.key === categoryKey);
+    const categoryLabel = activeCategory?.label ?? 'Data';
+    const CategoryForm = CATEGORY_FORMS[categoryKey] ?? MasterDataForm;
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [editTarget, setEditTarget] = useState(null); // null = tambah, object = edit
+    const [deleteTarget, setDeleteTarget] = useState(null);
+
+    const handleOpenAdd = () => { setEditTarget(null); setModalOpen(true); };
+    const handleOpenEdit = (row) => { setEditTarget(row); setModalOpen(true); };
+    const handleClose = () => { setModalOpen(false); setEditTarget(null); };
+
+    const handleSubmit = (values) => {
+        if (editTarget) {
+            updateItem(categoryKey, editTarget.id, values);
+        } else {
+            addItem(categoryKey, values);
+        }
+        handleClose();
+    };
+
+    const handleDelete = () => {
+        if (deleteTarget) deleteItem(categoryKey, deleteTarget.id);
+    };
+
+    const columns = [
+        {
+            key: 'urutan',
+            label: '#',
+            width: '60px',
+            render: (val) => (
+                <span className="text-xs font-mono text-gray-400 font-bold">{val}</span>
+            )
+        },
+        {
+            key: 'label',
+            label: 'Label / Nama',
+            render: (val) => (
+                <span className="font-semibold text-[#152042]">{val}</span>
+            )
+        },
+        {
+            key: 'kode',
+            label: 'Kode',
+            render: (val) => (
+                <span className="font-mono text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md">{val}</span>
+            )
+        },
+        {
+            key: 'aktif',
+            label: 'Status',
+            sortable: false,
+            render: (val, row) => (
+                <button
+                    onClick={() => toggleAktif(categoryKey, row.id)}
+                    className={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full transition-all ${
+                        val
+                            ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                            : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                    }`}
+                    title="Klik untuk toggle aktif/nonaktif"
+                >
+                    <span className={`w-1.5 h-1.5 rounded-full ${val ? 'bg-green-500' : 'bg-gray-400'}`} />
+                    {val ? 'Aktif' : 'Nonaktif'}
+                </button>
+            )
+        },
+    ];
+
+    const actionButtons = (row) => (
+        <>
+            <button
+                onClick={() => handleOpenEdit(row)}
+                title="Edit"
+                className="w-7 h-7 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:text-[#152042] hover:bg-[#152042]/5 hover:border-[#152042]/30 transition-all"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/>
+                </svg>
+            </button>
+            <button
+                onClick={() => setDeleteTarget(row)}
+                title="Hapus"
+                className="w-7 h-7 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-all"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                </svg>
+            </button>
+        </>
+    );
+
+    const activeCount = items.filter(i => i.aktif).length;
+    const inactiveCount = items.length - activeCount;
+
+    return (
+        <>
+            {/* Stats + Add Button */}
+            <div className="flex items-center justify-between mb-4 master-fade-up master-delay-1">
+                <div className="flex items-center gap-3">
+                    <span className="master-stat-pill text-xs font-bold bg-[#152042]/10 text-[#152042] px-2.5 py-1 rounded-full">
+                        {activeCount} Aktif
+                    </span>
+                    {inactiveCount > 0 && (
+                        <span className="master-stat-pill text-xs font-bold bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full">
+                            {inactiveCount} Nonaktif
+                        </span>
+                    )}
+                </div>
+                <button
+                    onClick={handleOpenAdd}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#FFC800] hover:bg-yellow-400 text-[#152042] font-bold text-sm rounded-lg transition-all shadow-sm shadow-[#FFC800]/30 hover:-translate-y-0.5"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                    </svg>
+                    Tambah {categoryLabel}
+                </button>
+            </div>
+
+            <div className="master-scale-in master-delay-2">
+                <DataTable
+                    columns={columns}
+                    data={items}
+                    emptyMessage="Belum ada data. Klik 'Tambah Data' untuk memulai."
+                    actions={actionButtons}
+                    rowClassName={(_, index) => 'master-row-in'}
+                    rowStyle={(_, index) => ({ animationDelay: `${index * 45}ms` })}
+                />
+            </div>
+
+            {/* Modal Tambah / Edit */}
+            <Modal
+                isOpen={modalOpen}
+                onClose={handleClose}
+                title={editTarget ? `Edit ${categoryLabel}: ${editTarget.label}` : `Tambah ${categoryLabel}`}
+                size="sm"
+            >
+                <CategoryForm
+                    initialData={editTarget}
+                    onSubmit={handleSubmit}
+                    onCancel={handleClose}
+                />
+            </Modal>
+
+            {/* Confirm Hapus */}
+            <ConfirmDialog
+                isOpen={!!deleteTarget}
+                onClose={() => setDeleteTarget(null)}
+                onConfirm={handleDelete}
+                title="Hapus Data Master"
+                message={`Anda akan menghapus "${deleteTarget?.label}". Data yang terhapus tidak dapat dikembalikan.`}
+            />
+        </>
+    );
+}
+</file>
+
+<file path="pages/MasterDataPage.jsx">
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useMasterDataStore } from '../store/masterDataStore';
+import MasterDataTable from '../components/MasterDataTable';
+import '../styles/masterData.css';
+
+export default function MasterDataPage() {
+    const { category: categoryParam } = useParams();
+    const navigate = useNavigate();
+    const { categories } = useMasterDataStore();
+
+    // Default ke kategori pertama jika tidak ada param
+    const activeCategoryKey = categoryParam || categories[0]?.key;
+    const activeCategory = categories.find((category) => category.key === activeCategoryKey);
+
+    useEffect(() => {
+        if (!categoryParam && categories.length > 0) {
+            navigate(`/admin/master-data/${categories[0].key}`, { replace: true });
+        }
+    }, [categoryParam, categories, navigate]);
+
+    return (
+        <div className="master-data-page space-y-8">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 master-fade-up">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800 tracking-tight">Master Data</h1>
+                    <p className="text-gray-500 mt-1">Kelola data referensi sistem</p>
+                </div>
+                <div className="master-active-card bg-white border border-gray-100 rounded-2xl px-5 py-4 shadow-sm min-w-[220px]">
+                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-gray-400">Kategori Aktif</p>
+                    <p className="mt-1 text-lg font-black text-[#152042]">{activeCategory?.label ?? 'Data'}</p>
+                </div>
+            </div>
+
+            {/* Table per Kategori */}
+            <MasterDataTable key={activeCategoryKey} categoryKey={activeCategoryKey} />
+        </div>
+    );
+}
+</file>
+
+<file path="store/masterDataStore.js">
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+// Seed Data Default sesuai Gambar Referensi
+const SEED_DATA = {
+    instansi: [
+        { id: 1, label: 'Pemerintah Provinsi DKI Jakarta', kode: 'DKI', aktif: true, urutan: 1, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+        { id: 2, label: 'Kementerian Keuangan', kode: 'KEMENKEU', aktif: true, urutan: 2, author: 'Admin Utama', time: '26 Mei 2025 14:20' },
+        { id: 3, label: 'Pemerintah Kota Bandung', kode: 'BANDUNG', aktif: true, urutan: 3, author: 'Admin Utama', time: '26 Mei 2025 09:15' },
+        { id: 4, label: 'Pemerintah Provinsi Jawa Timur', kode: 'JATIM', aktif: true, urutan: 4, author: 'Admin Utama', time: '25 Mei 2025 11:05' },
+        { id: 5, label: 'Kementerian Pendidikan dan Kebudayaan', kode: 'KEMDIKBUD', aktif: true, urutan: 5, author: 'Admin Utama', time: '25 Mei 2025 08:50' },
+        { id: 6, label: 'Badan Pusat Statistik', kode: 'BPS', aktif: true, urutan: 6, author: 'Admin Utama', time: '24 Mei 2025 16:40' },
+        { id: 7, label: 'Pemerintah Kota Surabaya', kode: 'SURABAYA', aktif: false, urutan: 7, author: 'Admin Utama', time: '24 Mei 2025 10:20' },
+        { id: 8, label: 'Kementerian Kesehatan', kode: 'KEMENKES', aktif: true, urutan: 8, author: 'Admin Utama', time: '23 Mei 2025 13:10' },
+    ],
+    jabatan: [
+        { id: 9, label: 'Guru Utama', kode: 'GURU_UTM', aktif: true, urutan: 1, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+        { id: 10, label: 'Dokter Spesialis', kode: 'DR_SP', aktif: true, urutan: 2, author: 'Admin Utama', time: '26 Mei 2025 14:20' },
+    ],
+    'unit-kerja': [
+        { id: 11, label: 'Bagian Umum', kode: 'UMUM', aktif: true, urutan: 1, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+    ],
+    golongan: [
+        { id: 12, label: 'IV/a', kode: 'IV_A', aktif: true, urutan: 1, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+    ],
+    'sumber-dana': [
+        { id: 13, label: 'APBN', kode: 'APBN', aktif: true, urutan: 1, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+    ],
+    pendidikan: [
+        { id: 14, label: 'S1 - Sarjana', kode: 'S1', aktif: true, urutan: 1, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+    ],
+    'status-pernikahan': [
+        { id: 15, label: 'Menikah', kode: 'NIKAH', aktif: true, urutan: 1, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+    ],
+    'jenis-kelamin': [
+        { id: 16, label: 'Laki-laki', kode: 'L', aktif: true, urutan: 1, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+        { id: 17, label: 'Perempuan', kode: 'P', aktif: true, urutan: 2, author: 'Admin Utama', time: '27 Mei 2025 10:30' },
+    ],
+};
+
+const CATEGORIES = [
+    { key: 'instansi', label: 'Instansi', icon: '🏢' },
+    { key: 'jabatan', label: 'Jabatan', icon: '👔' },
+    { key: 'unit-kerja', label: 'Unit Kerja', icon: '📁' },
+    { key: 'golongan', label: 'Golongan', icon: '🎖️' },
+    { key: 'sumber-dana', label: 'Sumber Dana', icon: '💳' },
+    { key: 'pendidikan', label: 'Pendidikan', icon: '🎓' },
+    { key: 'status-pernikahan', label: 'Status Pernikahan', icon: '💍' },
+    { key: 'jenis-kelamin', label: 'Jenis Kelamin', icon: '🚻' },
+];
+
+export const useMasterDataStore = create(
+    persist(
+        (set, get) => ({
+            categories: CATEGORIES,
+            data: SEED_DATA,
+
+            addItem: (category, item) => set((state) => {
+                const categoryData = state.data[category] ?? [];
+                const newItem = {
+                    ...item,
+                    id: Date.now(),
+                    urutan: categoryData.length + 1,
+                    aktif: item.aktif ?? true,
+                    author: 'Admin Utama',
+                    time: new Date().toLocaleString('id-ID'),
+                };
+                return {
+                    data: {
+                        ...state.data,
+                        [category]: [...categoryData, newItem],
+                    }
+                };
+            }),
+
+            updateItem: (category, id, updates) => set((state) => ({
+                data: {
+                    ...state.data,
+                    [category]: state.data[category].map(item =>
+                        item.id === id ? { ...item, ...updates } : item
+                    ),
+                }
+            })),
+
+            deleteItem: (category, id) => set((state) => {
+                const categoryData = state.data[category] ?? [];
+                return {
+                    data: {
+                        ...state.data,
+                        [category]: categoryData
+                            .filter(item => item.id !== id)
+                            .map((item, index) => ({ ...item, urutan: index + 1 })),
+                    }
+                };
+            }),
+
+            toggleAktif: (category, id) => set((state) => ({
+                data: {
+                    ...state.data,
+                    [category]: state.data[category].map(item =>
+                        item.id === id ? { ...item, aktif: !item.aktif } : item
+                    ),
+                }
+            })),
+            
+            getActiveByCategory: (category) => {
+                const state = get();
+                return (state.data[category] || []).filter(item => item.aktif);
+            },
+        }),
+        {
+            name: 'sikredit-master-data-final',
+        }
+    )
+);
+</file>
+
+<file path="styles/masterData.css">
+@keyframes masterFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes masterScaleIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes masterRowIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes masterGlow {
+  0%,
+  100% {
+    box-shadow: 0 18px 44px rgba(21, 32, 66, 0.10);
+  }
+  50% {
+    box-shadow: 0 20px 52px rgba(21, 32, 66, 0.16);
+  }
+}
+
+.master-data-page {
+  --master-ease: cubic-bezier(0.22, 0.68, 0, 1);
+}
+
+.master-fade-up {
+  opacity: 0;
+  animation: masterFadeUp 0.62s var(--master-ease) forwards;
+}
+
+.master-scale-in {
+  opacity: 0;
+  animation: masterScaleIn 0.56s var(--master-ease) forwards;
+}
+
+.master-row-in {
+  opacity: 0;
+  animation: masterRowIn 0.42s ease forwards;
+}
+
+.master-delay-1 {
+  animation-delay: 80ms;
+}
+
+.master-delay-2 {
+  animation-delay: 160ms;
+}
+
+.master-active-card {
+  animation: masterGlow 4s ease-in-out infinite;
+}
+
+.master-stat-pill {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.master-stat-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(21, 32, 66, 0.08);
+}
+</file>
+
+</files>

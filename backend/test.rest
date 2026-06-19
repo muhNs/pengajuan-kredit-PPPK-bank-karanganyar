@@ -1,0 +1,30 @@
+POST http://localhost:5000/api/v1/users/createUser
+Content-Type: application/json
+
+{
+    "username": "adminsuper",
+    "email": "adminsuper@gmail.com",
+    "password": "admin123"
+}
+
+###
+
+POST http://localhost:5000/api/v1/users/createUser
+Content-Type: application/json
+
+{
+    "username": "john_doe",
+    "email": "john@example.com",
+    "password": "password123"
+}
+
+###
+
+POST http://localhost:5000/api/v1/users/createUser
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "testpass"
+}

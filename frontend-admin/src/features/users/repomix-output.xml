@@ -1,0 +1,457 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+api/users.api.ts
+components/UserForm.tsx
+components/UserTable.tsx
+hooks/useUsers.ts
+pages/UserList.tsx
+types/users.types.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="api/users.api.ts">
+import api from '../../../lib/http';
+import type { User, UserFormData } from '../types/users.types';
+
+export const usersApi = {
+  getAllUsers: async (): Promise<User[]> => {
+    const response = await api.get('/users/getAllUsers');
+    return response.data;
+  },
+
+  createUser: async (data: UserFormData): Promise<User> => {
+    const response = await api.post('/users/createUser', data);
+    return response.data;
+  },
+
+  updateUser: async (id: number, data: Partial<UserFormData>): Promise<User> => {
+    const response = await api.put(`/users/updateUser/${id}`, data);
+    return response.data;
+  },
+
+  deleteUser: async (id: number): Promise<{ message: string }> => {
+    // Sesuai dokumentasi Anda, delete menggunakan method POST
+    const response = await api.post(`/users/deleteUser/${id}`); 
+    return response.data;
+  }
+};
+</file>
+
+<file path="components/UserForm.tsx">
+import { Save, ArrowLeft, Edit, UserPlus } from 'lucide-react';
+import type { UserFormProps } from '../types/users.types';
+
+export default function UserForm({ isEditing, isLoading, formData, onChange, onSubmit, onBack }: UserFormProps) {
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden w-full max-w-3xl mx-auto">
+      <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {isEditing ? <Edit size={20} className="text-[#1a1c2d]" /> : <UserPlus size={20} className="text-[#1a1c2d]" />}
+          <h2 className="font-semibold text-gray-800">{isEditing ? 'Edit Data User' : 'Form Tambah User'}</h2>
+        </div>
+        <button type="button" onClick={onBack} className="flex items-center gap-1.5 text-gray-500 hover:text-gray-800 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition-colors text-sm font-medium">
+          <ArrowLeft size={16} /> Kembali
+        </button>
+      </div>
+      <form onSubmit={onSubmit} className="p-6 space-y-5">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
+          <input type="text" name="name" required value={formData.name} onChange={onChange} placeholder="Masukkan nama lengkap" className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Akses</label>
+          <input type="email" name="email" required value={formData.email} onChange={onChange} placeholder="email@bprkaranganyar.co.id" className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            {isEditing ? 'Password Baru (Kosongkan jika tidak ingin diubah)' : 'Password'}
+          </label>
+          <input type="password" name="password" required={!isEditing} value={formData.password} onChange={onChange} placeholder="Minimal 6 karakter" minLength={6} className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">Hak Akses (Role)</label>
+          <select name="role" required value={formData.role} onChange={onChange} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <option value="ADMIN">ADMIN</option>
+            <option value="CS">CS</option>
+          </select>
+        </div>
+        <div className="pt-4 flex justify-end">
+          <button type="submit" disabled={isLoading} className="flex items-center gap-2 bg-yellow-400 text-[#1a1c2d] px-6 py-2.5 rounded-xl font-semibold hover:bg-yellow-500 transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
+            {isLoading ? <span className="text-sm">Menyimpan...</span> : <><Save size={18} /><span className="text-sm">{isEditing ? 'Simpan Perubahan' : 'Simpan User Baru'}</span></>}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+</file>
+
+<file path="components/UserTable.tsx">
+import { UserPlus, Edit, Trash2, Users as UsersIcon } from "lucide-react";
+import type { UserTableProps } from "../types/users.types";
+
+// Tambahkan prop isLoading jika Anda ingin mem-passing loading state ke tabel
+export default function UserTable({
+  users,
+  onAdd,
+  onEdit,
+  onDelete,
+}: UserTableProps) {
+  return (
+    // ... Layout Header Anda (sama persis dengan yang Anda buat) ...
+    <div className="p-4 md:p-6 bg-[#f4f7fb] min-h-screen">
+      {/* Tombol Add & Title sama persis */}
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <UsersIcon size={24} className="text-gray-700" /> Manajemen User
+          </h1>
+        </div>
+        <button
+          onClick={onAdd}
+          className="flex items-center justify-center gap-2 bg-yellow-400 text-[#1a1c2d] px-5 py-2.5 rounded-xl font-semibold hover:bg-yellow-500 transition-colors shadow-sm"
+        >
+          <UserPlus size={18} /> <span>Tambah User</span>
+        </button>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="bg-gray-50 border-b border-gray-100 text-gray-600">
+              <tr>
+                <th className="px-6 py-4 font-semibold">Nama Lengkap</th>
+                <th className="px-6 py-4 font-semibold">Email</th>
+                <th className="px-6 py-4 font-semibold">Hak Akses</th>
+                <th className="px-6 py-4 font-semibold text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {users.map((user) => (
+                <tr
+                  key={user.id}
+                  className="hover:bg-gray-50/50 transition-colors"
+                >
+                  <td className="px-6 py-4 font-medium text-gray-800">
+                    {user.name}
+                  </td>{" "}
+                  {/* <-- UBAH KE name */}
+                  <td className="px-6 py-4 text-gray-600">{user.email}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${user.role === "ADMIN" ? "bg-purple-100 text-purple-700 border border-purple-200" : "bg-blue-100 text-blue-700 border border-blue-200"}`}
+                    >
+                      {user.role}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 flex justify-center gap-2">
+                    {" "}
+                    {/* Tambah gap-2 agar tombol tidak menempel */}
+                    <button
+                      onClick={() => onEdit(user)}
+                      className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors font-medium"
+                    >
+                      <Edit size={18} />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      onClick={() => onDelete(user.id)}
+                      className="flex items-center gap-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors font-medium"
+                    >
+                      <Trash2 size={18} />
+                      <span>Delete</span>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {users.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-6 py-8 text-center text-gray-500"
+                  >
+                    Belum ada data user.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="hooks/useUsers.ts">
+import { useState, useEffect, useCallback } from 'react';
+import { usersApi } from '../api/users.api';
+import type { User, UserFormData } from '../types/users.types';
+import Swal from 'sweetalert2';
+
+export const useUsers = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Ambil Data
+  const fetchUsers = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await usersApi.getAllUsers();
+      setUsers(data);
+    } catch (error) {
+      console.error("Gagal mengambil data user:", error);
+      alert("Gagal mengambil data user dari server.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  // Tambah User
+  const createUser = async (formData: UserFormData) => {
+    setIsSubmitting(true);
+    try {
+      await usersApi.createUser(formData);
+      alert(`User ${formData.name} berhasil ditambahkan!`);
+      await fetchUsers(); // Refresh tabel
+      return true; // Return true jika sukses untuk trigger close form
+    } catch (error: any) {
+      alert(`Gagal menambah user: ${error.response?.data?.message || error.message}`);
+      return false;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Update User
+  const updateUser = async (id: number, formData: UserFormData) => {
+    setIsSubmitting(true);
+    try {
+      // Buat payload baru, hapus password jika kosong (agar tidak mengubah password menjadi string kosong)
+      const payload: Partial<UserFormData> = { ...formData };
+      if (!payload.password) delete payload.password;
+
+      await usersApi.updateUser(id, payload);
+      alert(`Data user ${formData.name} berhasil diperbarui!`);
+      await fetchUsers();
+      return true;
+    } catch (error: any) {
+      alert(`Gagal mengubah user: ${error.response?.data?.message || error.message}`);
+      return false;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Hapus User
+  const deleteUser = async (id: number) => {
+    const isConfirm = await Swal.fire({
+    title: "Yakin hapus user?",
+    text: "Data user yang dihapus tidak bisa dikembalikan",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, hapus",
+    cancelButtonText: "Batal",
+    buttonsStyling: false,
+    customClass: {
+      confirmButton:
+        "bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600",
+      cancelButton:
+        "bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 ml-2",
+    },
+  });
+    if (!isConfirm) return;
+
+    try {
+      await usersApi.deleteUser(id);
+      alert("User berhasil dihapus.");
+      await fetchUsers();
+    } catch (error: any) {
+      alert(`Gagal menghapus user: ${error.response?.data?.message || error.message}`);
+    }
+  };
+
+  return {
+    users,
+    isLoading,
+    isSubmitting,
+    createUser,
+    updateUser,
+    deleteUser,
+  };
+};
+</file>
+
+<file path="pages/UserList.tsx">
+import { useState } from 'react';
+import UserTable from '../components/UserTable';
+import UserForm from '../components/UserForm';
+import { useUsers } from '../hooks/useUsers';
+import type { User, UserFormData } from '../types/users.types';
+
+export default function UsersList() {
+  const { users, isLoading, isSubmitting, createUser, updateUser, deleteUser } = useUsers();
+  
+  const [view, setView] = useState<'table' | 'form'>('table');
+  const [editingId, setEditingId] = useState<number | null>(null);
+
+  const [formData, setFormData] = useState<UserFormData>({
+    name: '', 
+    email: '',
+    password: '',
+    role: 'ADMIN',
+  });
+
+  const handleAddUser = () => {
+    setEditingId(null);
+    setFormData({ name: '', email: '', password: '', role: 'ADMIN' });
+    setView('form');
+  };
+
+  const handleEditUser = (user: User) => {
+    setEditingId(user.id);
+    setFormData({ 
+      name: user.name, 
+      email: user.email, 
+      password: '', // Kosongkan saat edit (opsional di API)
+      role: user.role 
+    });
+    setView('form');
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Logika Submit yang kini terintegrasi langsung dengan API Hook
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    let isSuccess = false;
+    if (editingId) {
+      isSuccess = await updateUser(editingId, formData);
+    } else {
+      isSuccess = await createUser(formData);
+    }
+
+    // Jika API call sukses, kembali ke tampilan tabel
+    if (isSuccess) {
+      setView('table');
+    }
+  };
+
+  if (isLoading && users.length === 0) {
+    return <div className="p-6 text-center text-gray-500">Memuat data user...</div>;
+  }
+
+  return (
+    <div className="p-4 md:p-6 bg-[#f4f7fb] min-h-screen">
+      {view === 'table' ? (
+        <UserTable 
+          users={users} 
+          onAdd={handleAddUser} 
+          onEdit={handleEditUser} 
+          onDelete={deleteUser}
+        />
+      ) : (
+        <div className="flex items-center justify-center pt-8">
+          <UserForm
+            isEditing={!!editingId}
+            isLoading={isSubmitting} // Gunakan state loading saat submit dari hook
+            formData={formData}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+            onBack={() => setView('table')}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+</file>
+
+<file path="types/users.types.ts">
+export type Role = 'ADMIN' | 'CS';
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: Role;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface UserFormData {
+  name: string;
+  email: string;
+  password?: string;
+  role: Role;
+}
+
+export interface UserFormProps {
+  isEditing: boolean;
+  isLoading: boolean;
+  formData: UserFormData;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onSubmit: (e: React.FormEvent) => void;
+  onBack: () => void;
+}
+
+export interface UserTableProps {
+  users: User[];
+  isLoading?: boolean;
+  onAdd: () => void;
+  onEdit: (user: User) => void;
+  onDelete: (id: number) => void;
+}
+</file>
+
+</files>
