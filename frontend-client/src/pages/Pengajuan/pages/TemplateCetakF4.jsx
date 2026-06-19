@@ -33,15 +33,15 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
 
     // Ambil datanya, siapkan nilai "fallback" berupa titik-titik jika data kosong/belum dipilih
     const namaKepala =
-        instansiTerpilih?.nama_kepala ||
+        instansiTerpilih?.nama_kepala_dinas ||
         "...................................................";
     const nipKepala =
-        instansiTerpilih?.nip_kepala || "..............................";
+        instansiTerpilih?.nip_kepala_dinas || "..............................";
     const namaBendahara =
-        instansiTerpilih?.nama_bendahara ||
+        instansiTerpilih?.nama_bendahara_dinas ||
         "...................................................";
     const nipBendahara =
-        instansiTerpilih?.nip_bendahara || "..............................";
+        instansiTerpilih?.nip_bendahara_dinas || "..............................";
 
     return (
         <div
@@ -252,7 +252,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                                 <td>Alamat Instansi / Kantor</td>
                                 <td>:</td>
                                 <td className="uppercase garis-bawah">
-                                    {formData.alamat_instansi || "\u00A0"}
+                                    {instansiTerpilih?.alamat || "\u00A0"}
                                 </td>
                             </tr>
                             <tr>
@@ -277,7 +277,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                                 <td className="w-[66%] uppercase garis-bawah font-bold">
                                     Rp.{" "}
                                     {formData.nominal_kredit
-                                        ? formatRp(formData.nominal_kredit)
+                                        ? formatRp(String(formData.nominal_kredit).replace(/\D/g, ''))
                                         : "\u00A0"}
                                 </td>
                             </tr>
@@ -625,24 +625,24 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                     Sehubungan dengan pengajuan kredit kami pada Bank tersebut.
                 </p>
 
-                <div className="flex mb-8">
-                    <div className="w-[15%]">
-                        <p className="mb-1">Atas Nama</p>
-                        <p>Pada tanggal</p>
-                    </div>
-                    <div className="w-[2%]">
-                        <p className="mb-1">:</p>
-                        <p>:</p>
-                    </div>
-                    <div className="w-[83%]">
-                        <p className="uppercase font-bold mb-1 garis-bawah inline-block min-w-[300px]">
-                            {formData.nama || "\u00A0"}
-                        </p>
-                        <p className="garis-bawah inline-block min-w-[300px]">
-                            {getTanggalSekarang()}
-                        </p>
-                    </div>
-                </div>
+                <table className="mb-8 border-separate border-spacing-y-1">
+                    <tbody>
+                        <tr>
+                            <td className="w-[15%] align-top">Atas Nama</td>
+                            <td className="w-[2%] align-top">:</td>
+                            <td className="uppercase font-bold garis-bawah min-w-[300px] align-top">
+                                {formData.nama || "\u00A0"}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="align-top">Pada tanggal</td>
+                            <td className="align-top">:</td>
+                            <td className="garis-bawah min-w-[300px] align-top">
+                                {getTanggalSekarang()}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <p className="mb-8">
                     Demikian pernyataan ini kami buat untuk dapat dipergunakan
@@ -660,7 +660,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                 <table className="avoid-break w-full border-collapse border border-black h-28">
                     <tbody>
                         <tr>
-                            {/* Kolom 1: Selalu Nama Pemohon */}
+                            {/* Kolom 1: Debitur/Pemohon */}
                             <td className="border border-black w-1/4 align-bottom p-2 h-28">
                                 Nama:{" "}
                                 <span className="uppercase garis-bawah inline-block min-w-[120px] text-center font-bold">
@@ -668,31 +668,27 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                                 </span>
                             </td>
 
-                            {/* Kolom 2: Jika belum menikah -> Kerabat. Jika menikah -> Pasangan */}
+                            {/* Kolom 2: Istri/Suami Debitur */}
                             <td className="border border-black w-1/4 align-bottom p-2 h-28">
                                 Nama:{" "}
                                 <span className="uppercase garis-bawah inline-block min-w-[120px] text-center font-bold">
-                                    {formData.is_belum_menikah
-                                        ? formData.nama_kerabat || "\u00A0"
-                                        : formData.nama_pasangan || "\u00A0"}
+                                    {formData.nama_pasangan || "\u00A0"}
                                 </span>
                             </td>
 
-                            {/* Kolom 3: Jika belum menikah -> Kosong. Jika menikah -> Kerabat */}
+                            {/* Kolom 3: Penjamin */}
                             <td className="border border-black w-1/4 align-bottom p-2 h-28">
                                 Nama:{" "}
                                 <span className="uppercase garis-bawah inline-block min-w-[120px] text-center font-bold">
-                                    {!formData.is_belum_menikah
-                                        ? formData.nama_kerabat || "\u00A0"
-                                        : "\u00A0"}
+                                    {formData.nama_penjamin || "\u00A0"}
                                 </span>
                             </td>
 
-                            {/* Kolom 4: Selalu Kosong */}
+                            {/* Kolom 4: Istri/Suami Penjamin */}
                             <td className="border border-black w-1/4 align-bottom p-2 h-28">
                                 Nama:{" "}
-                                <span className="garis-bawah inline-block min-w-[120px]">
-                                    &nbsp;
+                                <span className="uppercase garis-bawah inline-block min-w-[120px] text-center font-bold">
+                                    {formData.nama_pasangan_penjamin || "\u00A0"}
                                 </span>
                             </td>
                         </tr>
@@ -768,7 +764,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                                 Rp.{" "}
                                 <span className="garis-bawah inline-block min-w-[150px] font-bold">
                                     {formData.nominal_kredit
-                                        ? formatRp(formData.nominal_kredit)
+                                        ? formatRp(String(formData.nominal_kredit).replace(/\D/g, ''))
                                         : "\u00A0"}
                                 </span>{" "}
                                 ,00

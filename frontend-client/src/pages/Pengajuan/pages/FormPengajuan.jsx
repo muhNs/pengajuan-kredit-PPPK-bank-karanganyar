@@ -164,7 +164,8 @@ export default function FormPengajuan() {
     if (isSuccess) {
         return (
             <div className="max-w-4xl mx-auto space-y-6">
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center text-[#152042]">
+                {/* Bagian ini disembunyikan saat print/export PDF */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center text-[#152042] print:hidden">
                     <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <CheckCircle className="w-10 h-10 text-green-500" />
                     </div>
