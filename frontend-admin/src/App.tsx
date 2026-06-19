@@ -18,7 +18,6 @@ import PengajuanDetailPage from "./features/pengajuan/pages/PengajuanDetailPage"
 
 // Import Halaman Auth
 import LoginPage from "./features/auth/pages/LoginPage";
-import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
 
 // Import ProtectedRoute
 import ProtectedRoute from "./features/auth/routes/ProtectedRoute";
@@ -43,7 +42,6 @@ function App() {
       <Routes>
         {/* Auth Routes (tidak perlu proteksi) */}
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Redirect Root */}
         <Route path="/" element={<Navigate to="/login" replace />} />

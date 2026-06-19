@@ -95,15 +95,7 @@ export default function LoginForm() {
                     </div>
                 )}
 
-                <div className="flex justify-end pt-1">
-                    <button
-                        type="button"
-                        onClick={() => navigate("/forgot-password")}
-                        className="text-[13px] sm:text-sm font-semibold text-[#152042] hover:text-[#FFC800] hover:underline transition-colors"
-                    >
-                        Lupa Password?
-                    </button>
-                </div>
+
 
                 <button
                     type="submit"
