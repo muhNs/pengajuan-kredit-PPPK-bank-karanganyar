@@ -20,10 +20,11 @@ export const pengajuanApi = {
     // 2. Fungsi Mengambil Master Data secara Paralel
     getMasterDataForForm: async (): Promise<MasterDataOptions> => {
         try {
-            const [rumah, nikah, gender, instansi] = await Promise.all([
+            const [rumah, nikah, gender, hubunganPenjamin, instansi] = await Promise.all([
                 api.get("/master/status-rumah"),
                 api.get("/master/status-pernikahan"),
                 api.get("/master/jenis-kelamin"),
+                api.get("/master/hubungan-penjamin"),
                 api.get("/instansi/getAllInstansi"),
             ]);
 
@@ -31,6 +32,7 @@ export const pengajuanApi = {
                 statusRumah: rumah.data.data || rumah.data || [],
                 statusPernikahan: nikah.data.data || nikah.data || [],
                 jenisKelamin: gender.data.data || gender.data || [],
+                hubunganPenjamin: hubunganPenjamin.data.data || hubunganPenjamin.data || [],
                 instansi: instansi.data.data || instansi.data || [],
             };
         } catch (error) {
@@ -40,6 +42,7 @@ export const pengajuanApi = {
                 statusRumah: [],
                 statusPernikahan: [],
                 jenisKelamin: [],
+                hubunganPenjamin: [],
                 instansi: [],
             };
         }

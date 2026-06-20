@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMasterDataStore } from '../store/masterDataStore';
 import MasterDataTable from '../components/MasterDataTable';
-import MasterDataInstansi from '../components/MasterDataInstansi'; // Import komponen Instansi
+import MasterDataInstansi from '../components/MasterDataInstansi';
 import '../styles/masterData.css';
 
 export default function MasterDataPage() {

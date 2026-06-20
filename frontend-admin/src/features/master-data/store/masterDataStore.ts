@@ -13,14 +13,14 @@ const CATEGORIES = [
     // { key: 'unit-kerja', label: 'Unit Kerja', icon: '📁' },
     // { key: 'golongan', label: 'Golongan', icon: '🎖️' },
     // { key: 'sumber-dana', label: 'Sumber Dana', icon: '💳' },
-    // { key: 'pendidikan', label: 'Pendidikan', icon: '🎓' },
+    { key: 'hubungan-penjamin', label: 'Hubungan Penjamin', icon: '👨‍👩‍' },
     { key: 'status-rumah', label: 'Status Rumah', icon: '🏠' },
     { key: 'status-pernikahan', label: 'Status Pernikahan', icon: '💍' },
     { key: 'jenis-kelamin', label: 'Jenis Kelamin', icon: '🚻' },
 ];
 
 const normalizeItem = (item: any, category: string) => {
-    if (category === 'instansi') return item; // Instansi tidak perlu diubah
+    if (category === 'instansi') return item;
 
     // Ambil nilai dari properti manapun yang dikirim backend
     const value = item.kepemilikan || item.status || item.gender || item.nama;
@@ -43,10 +43,11 @@ export const useMasterDataStore = create((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const result = await fetchMasterDataApi(category);
+            const normalizedResult = Array.isArray(result) ? result.map((item: any) => normalizeItem(item, category)) : result;
             set((state: any) => ({
                 data: {
                     ...state.data,
-                    [category]: result, // Simpan data ke key kategori (misal: data['jenis-kelamin'])
+                    [category]: normalizedResult, // Simpan data ke key kategori (misal: data['jenis-kelamin'])
                 },
                 isLoading: false
             }));
@@ -66,6 +67,7 @@ export const useMasterDataStore = create((set, get) => ({
             const dataToSend = category === 'instansi' ? payload : { nama: payload.label };
             
             const newItem = await createMasterDataApi(category, dataToSend);
+            const normalizedNewItem = normalizeItem(newItem, category);
             
             // Update state lokal agar tabel langsung re-render tanpa perlu refresh API
             set((state: any) => {
@@ -73,7 +75,7 @@ export const useMasterDataStore = create((set, get) => ({
                 return {
                     data: {
                         ...state.data,
-                        [category]: [newItem, ...currentData],
+                        [category]: [normalizedNewItem, ...currentData],
                     },
                     isLoading: false
                 };
@@ -89,12 +91,13 @@ export const useMasterDataStore = create((set, get) => ({
         try {
             const dataToSend = category === 'instansi' ? payload : { nama: payload.label };
             const updatedItem = await updateMasterDataApi(category, id, dataToSend);
+            const normalizedUpdatedItem = normalizeItem(updatedItem, category);
 
             set((state: any) => ({
                 data: {
                     ...state.data,
                     [category]: state.data[category].map((item: any) => 
-                        item.id === id ? updatedItem : item
+                        item.id === id ? normalizedUpdatedItem : item
                     ),
                 },
                 isLoading: false

@@ -16,6 +16,7 @@ export interface MasterDataOptions {
   statusRumah: MasterOption[];
   statusPernikahan: MasterOption[];
   jenisKelamin: MasterOption[];
+  hubunganPenjamin: MasterOption[];
   instansi: InstansiOption[];
 }
 

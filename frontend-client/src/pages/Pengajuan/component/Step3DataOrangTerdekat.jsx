@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-export default function Step3DataOrangTerdekat({ formData, setFormData }) {
+export default function Step3DataOrangTerdekat({ formData, setFormData, masterOptions}) {
     // Fungsi khusus untuk menangani perubahan input
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -107,7 +107,11 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             required
                             className="w-full px-4 py-3 h-[50px] rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#FFC800] focus:border-[#FFC800] bg-gray-50 outline-none transition-all"
                         >
-                            <option value="">Pilih Hubungan Kekerabatan</option>
+                            <option value="">Hubungan dengan Pemohon</option>
+                                {masterOptions.hubunganPenjamin?.map((hp) => (
+                                    <option key={hp.id} value={hp.status}>{hp.status}</option>
+                                ))}
+                            {/* <option value="">Pilih Hubungan Kekerabatan</option>
                             <option value="Orang Tua">Orang Tua</option>
                             <option value="Anak Kandung">Anak Kandung</option>
                             <option value="Saudara Kandung">
@@ -115,7 +119,7 @@ export default function Step3DataOrangTerdekat({ formData, setFormData }) {
                             </option>
                             <option value="Keluarga Lainnya">
                                 Keluarga Lainnya
-                            </option>
+                            </option> */}
                         </select>
                     </div>
 

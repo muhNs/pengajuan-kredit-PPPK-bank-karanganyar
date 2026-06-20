@@ -8,6 +8,7 @@ export const usePengajuan = () => {
         statusRumah: [],
         statusPernikahan: [],
         jenisKelamin: [],
+        hubunganPenjamin: [],
         instansi: [],
     });
     const [isLoadingMaster, setIsLoadingMaster] = useState<boolean>(true);
