@@ -88,40 +88,42 @@ function App() {
           />
 
           {/* Users */}
-          <Route
-            path="/admin/users"
-            element={
-              <AdminLayout>
-                <UsersList />
-              </AdminLayout>
-            }
-          />
-          {/* <Route
-            path="/admin/users/detail/:id"
-            element={
-              <AdminLayout>
-                <UsersDetailPage />
-              </AdminLayout>
-            }
-          /> */}
+          <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+            <Route
+              path="/admin/users"
+              element={
+                <AdminLayout>
+                  <UsersList />
+                </AdminLayout>
+              }
+            />
+            {/* <Route
+              path="/admin/users/detail/:id"
+              element={
+                <AdminLayout>
+                  <UsersDetailPage />
+                </AdminLayout>
+              }
+            /> */}
 
-          {/* Master Data */}
-          <Route
-            path="/admin/master-data"
-            element={
-              <AdminLayout>
-                <MasterDataPage />
-              </AdminLayout>
-            }
-          />
-          <Route
-            path="/admin/master-data/:category"
-            element={
-              <AdminLayout>
-                <MasterDataPage />
-              </AdminLayout>
-            }
-          />
+            {/* Master Data */}
+            <Route
+              path="/admin/master-data"
+              element={
+                <AdminLayout>
+                  <MasterDataPage />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/master-data/:category"
+              element={
+                <AdminLayout>
+                  <MasterDataPage />
+                </AdminLayout>
+              }
+            />
+          </Route>
         </Route>
 
         {/* Fallback */}

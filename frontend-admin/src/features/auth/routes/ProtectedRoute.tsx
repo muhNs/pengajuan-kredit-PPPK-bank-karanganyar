@@ -3,8 +3,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import { getProfileApi } from "../api/auth.api";
 
-export default function ProtectedRoute() {
-  const { isAuthenticated, isInitialized, setAuth, setInitialized, clearAuth } =
+export default function ProtectedRoute({ allowedRoles }: { allowedRoles?: string[] } = {}) {
+  const { isAuthenticated, isInitialized, user, setAuth, setInitialized, clearAuth } =
     useAuthStore();
 
   useEffect(() => {
@@ -47,6 +47,11 @@ export default function ProtectedRoute() {
   // Jika pengecekan selesai dan statusnya tidak terotentikasi, usir ke halaman login
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  // Jika peran tidak diizinkan, arahkan kembali ke admin dashboard
+  if (allowedRoles && user?.role && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/admin" replace />;
   }
 
   // Jika aman, render halaman Admin (Sidebar, Dashboard, dll)

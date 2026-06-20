@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useMasterDataStore } from "../../features/master-data/store/masterDataStore";
 import { useAuth } from "../../features/auth/hooks/useAuth";
+import { useAuthStore } from "../../features/auth/stores/authStore";
 import { ProfileCard } from "../ui/ProfileCard";
 import { useUIStore } from "../../store/uiStore";
 
@@ -25,7 +26,7 @@ export default function AdminSidebar() {
   );
 
   // Semua icon sekarang menggunakan lucide-react dengan ukuran dan ketebalan yang konsisten
-  const NAV_ITEMS = [
+  const RAW_NAV_ITEMS = [
     {
       to: "/admin",
       exact: true,
@@ -55,6 +56,15 @@ export default function AdminSidebar() {
       })),
     },
   ];
+
+  const { user } = useAuthStore();
+
+  const NAV_ITEMS = RAW_NAV_ITEMS.filter((item) => {
+    if (user?.role === "CS") {
+      return item.label !== "Master Data" && item.label !== "Users";
+    }
+    return true;
+  });
 
   const isActive = (to, exact = false) => {
     if (exact) return location.pathname === to;
