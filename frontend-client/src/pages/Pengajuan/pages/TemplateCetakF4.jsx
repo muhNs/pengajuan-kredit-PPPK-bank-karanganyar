@@ -848,20 +848,18 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
 
                 <div className="avoid-break flex justify-between text-center px-12">
                     <div className="w-1/2 flex flex-col justify-between items-center">
-                        <p>Suami</p>
+                        <p>Suami / Istri</p>
                         <div className="h-24"></div>
                         <p className="uppercase">
                             [{" "}
                             <span className="garis-bawah inline-block min-w-[150px] font-bold text-center">
-                                {formData.jenis_kelamin === "Laki-laki"
-                                    ? formData.nama
-                                    : formData.nama_pasangan || "\u00A0"}
+                                {formData.nama_pasangan || "\u00A0"}
                             </span>{" "}
                             ]
                         </p>
                     </div>
                     <div className="w-1/2 flex flex-col justify-between items-center relative">
-                        <p>Istri</p>
+                        <p>Pemohon</p>
                         <div className="absolute top-10 text-[10px] italic text-center w-full">
                             Materai Rp. 10.000,-
                         </div>
@@ -869,9 +867,7 @@ export default function TemplateCetakF4({ formData, masterOptions }) {
                         <p className="uppercase">
                             [{" "}
                             <span className="garis-bawah inline-block min-w-[150px] font-bold text-center">
-                                {formData.jenis_kelamin === "Perempuan"
-                                    ? formData.nama
-                                    : formData.nama_pasangan || "\u00A0"}
+                                {formData.nama || "\u00A0"}
                             </span>{" "}
                             ]
                         </p>
